@@ -1,0 +1,4 @@
+server:
+  hosts:
+    sven:
+      ansible_host: 134.60.25.224
