@@ -1,0 +1,89 @@
+services:
+
+  # kanidm:
+  #   container_name: kanidm
+  #   image: kanidm/kanidm
+
+  certbot-spatz:
+    image: serversideup/certbot-dns-cloudflare
+    container_name: certbot-spatz
+    restart: always
+    # user: "${UID}:${GID}"
+    volumes:
+      - ./certbot:/etc/letsencrypt
+    environment:
+      CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_API_TOKEN}"
+      CERTBOT_EMAIL: "${CERTBOT_EMAIL}"
+      CLOUDFLARE_PROPAGATION_SECONDS: 30
+      CERTBOT_DOMAINS: "spatz.wtf,ftp.spatz.wtf,static.spatz.wtf,*.sven.spatz.wtf"
+
+  certbot-idm:
+    image: serversideup/certbot-dns-cloudflare
+    container_name: certbot-idm
+    restart: always
+    # user: "${UID}:${GID}"
+    volumes:
+      - ./certbot:/etc/letsencrypt
+    environment:
+      CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_API_TOKEN}"
+      CERTBOT_EMAIL: "${CERTBOT_EMAIL}"
+      CLOUDFLARE_PROPAGATION_SECONDS: 30
+      CERTBOT_DOMAINS: "idm.spatz.wtf"
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    # user: "${UID}:${GID}"
+    ports:
+      - "80:80/tcp"   # web
+      - "443:443/tcp" # websecure
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./traefik/traefik.yml:/traefik.yml
+      - ./traefik/rules:/rules
+      - ./certbot:/certs:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - --configFile=/traefik.yml
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik.rule: Host(`traefik.sven.${DOMAIN}`)
+      traefik.http.routers.traefik.entrypoints: websecure
+      traefik.http.routers.traefik.service: api@internal
+      traefik.http.routers.traefik.tls: true
+
+  sftpgo:
+    image: drakkan/sftpgo:v2.6-alpine
+    container_name: sftpgo
+    restart: always
+    ports:
+      - "2121:2121"
+      - "2022:2022"
+    # volumes:
+      # - # add whatever folders we need
+    # environment:
+      # - SFTPGO_DATA_PROVIDER_CREATE_DEFAULT_ADMIN: true
+      # - SFTPGO_FTPD_BINDINGS_0_PORT: 2121
+    labels:
+      traefik.enable: true
+      traefik.http.services.sftpgo-ui.loadbalancer.server.port: 8080
+      traefik.http.routers.sftpgo-ui.rule: Host(`ftp.${DOMAIN}`)
+      traefik.http.routers.sftpgo-ui.entrypoints: websecure
+      traefik.http.routers.sftpgo-ui.service: sftpgo-ui
+      traefik.http.routers.sftpgo-ui.tls: true
+
+  httpd:
+    image: httpd:2.4-alpine
+    container_name: httpd
+    restart: always
+    labels:
+      traefik.enable: true
+      traefik.http.services.httpd.loadbalancer.server.port: 80
+      traefik.http.routers.httpd.rule: Host(`static.${DOMAIN}`)
+      traefik.http.routers.httpd.entrypoints: websecure
+      traefik.http.routers.httpd.service: httpd
+      traefik.http.routers.httpd.tls: true

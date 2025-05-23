@@ -1,9 +1,6 @@
-- name: My first play
+- name: Infra
   hosts: server
-  tasks:
-   - name: Ping my hosts
-     ansible.builtin.ping:
-
-   - name: Print message
-     ansible.builtin.debug:
-       msg: Hello world
+  roles:
+    # - update
+    # - docker
+    - sven-compose

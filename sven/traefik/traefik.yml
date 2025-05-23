@@ -1,0 +1,45 @@
+global:
+  sendAnonymousUsage: false
+  checkNewVersion: false
+
+entryPoints:
+  web:
+    address: ":80/tcp"
+    http:
+      redirections:
+        entrypoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: ":443/tcp"
+    http:
+      tls:
+        options: "tls-options@file"
+
+serversTransport:
+  insecureSkipVerify: true
+
+providers:
+  file:
+    watch: true
+    directory: "/rules"
+  
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    watch: true
+    network: "bridge"
+
+api:
+  dashboard: true
+  insecure: false
+
+accessLog:
+  bufferingSize: 20
+  filters:
+    statusCodes:
+      - "300-304"
+      - "400-451"
+      - "500-511"
+    retryAttempts: true

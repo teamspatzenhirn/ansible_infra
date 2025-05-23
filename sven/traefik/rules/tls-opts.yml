@@ -1,0 +1,11 @@
+tls:
+  options:
+    default:
+      sniStrict: true
+  stores:
+    default: {}
+  certificates:
+    - certFile: /certs/live/idm.spatz.wtf/fullchain.pem
+      keyFile: /certs/live/idm.spatz.wtf/privkey.pem
+    - certFile: /certs/live/spatz.wtf/fullchain.pem
+      keyFile: /certs/live/spatz.wtf/privkey.pem
