@@ -6,8 +6,8 @@ pc:
     host_domain: spatz.wtf
     ansible_host: "{{inventory_hostname}}.{{host_domain}}"
   hosts:
-    # pc3:
-    # pc4:
-    # pc6:
-    # pc8:
+    pc3:
+    pc4:
+    pc6:
+    pc8:
     pc13:
