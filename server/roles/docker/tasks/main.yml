@@ -1,0 +1,51 @@
+- name: "docker: remove legacy packages"
+  become: true
+  apt:
+    name:
+      - docker.io
+      - docker-compose
+      - docker-compose-v2
+      - docker-doc
+      - podman-docker
+      - containerd
+      - runc
+    state: absent
+
+- name: "docker: install prerequisites via apt"
+  become: true
+  apt:
+    name:
+      - ca-certificates
+      - curl
+    state: latest
+    update_cache: yes
+
+- name: "docker: add docker repo"
+  become: true
+  deb822_repository:
+    name: docker
+    types: deb
+    architectures: amd64
+    uris: https://download.docker.com/linux/ubuntu
+    suites: '{{ ansible_distribution_release }}'
+    components: stable
+    signed_by: https://download.docker.com/linux/ubuntu/gpg
+
+- name: "docker: install and update"
+  become: true
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: latest
+    update_cache: yes
+
+- name: "docker: add docker group to ansible user"
+  become: true
+  user:
+    name: ansible
+    append: true
+    groups: docker

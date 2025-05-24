@@ -1,0 +1,5 @@
+- name: "authorized key"
+  authorized_key:
+    user: ansible
+    state: present
+    key: "https://raw.githubusercontent.com/teamspatzenhirn/ansible_infra/refs/heads/main/ansible_key.pub"

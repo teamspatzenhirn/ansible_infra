@@ -1,0 +1,9 @@
+- name: PCs
+  hosts: pc
+  roles:
+    - update
+    # - docker
+    - ansible-user
+    - spatz-user
+    - mounts
+    - kanidm

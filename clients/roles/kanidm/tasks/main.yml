@@ -1,0 +1,84 @@
+- name: "ensure config folder exists"
+  become: true
+  file: path=/etc/kanidm state=directory
+
+- name: "copy config"
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/kanidm/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - config
+    - unixd
+  register: configs
+
+- name: "add kanidm repo"
+  become: true
+  deb822_repository:
+    name: kanidm
+    types: deb
+    architectures: amd64
+    uris: https://kanidm.github.io/kanidm_ppa
+    suites: '{{ ansible_distribution_release }}'
+    components: stable
+    signed_by: https://kanidm.github.io/kanidm_ppa/kanidm_ppa.asc
+
+- name: "install tools & unixd"
+  become: true
+  apt:
+    name:
+      - kanidm
+      - kanidm-unixd
+    state: latest
+    update_cache: yes
+
+- name: "create kanidm-unixd-tasks.service override directory"
+  become: true
+  file:
+    mode: 0755
+    owner: root
+    group: root
+    path: /etc/systemd/system/kanidm-unixd-tasks.service.d
+    state: directory
+
+- name: "override kanidm-unixd-tasks.service"
+  become: true
+  ini_file:
+    dest: /etc/systemd/system/kanidm-unixd-tasks.service.d/rw_override.conf
+    mode: 0644
+    owner: root
+    group: root
+    section: Service
+    option: ReadWritePaths
+    value: /home /var/run/kanidm-unixd /u
+  register: modify
+
+- name: "restart unixd service"
+  become: true
+  shell: systemctl restart kanidm-unixd
+  when: configs.changed
+
+- name: "restart unixd-tasks service"
+  become: true
+  shell: systemctl daemon-reload && systemctl restart kanidm-unixd-tasks
+  when: modify.changed or configs.changed
+
+- name: "update nsswitch.conf"
+  become: true
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: '^{{ item }}:'
+    line: '{{ item }}: kanidm compat'
+  with_items:
+    - passwd
+    - group
+
+- name: "update nsswitch.conf shadow"
+  become: true
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: '^shadow:'
+    line: 'shadow: files'

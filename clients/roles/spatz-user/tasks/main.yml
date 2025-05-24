@@ -1,0 +1,16 @@
+- name: "create"
+  become: true
+  user:
+    name: spatz
+    password: "$6$ynbq.BmitgsKOryO$xufrWj3B4Fxn50OKSwOs9WRrILd7i3cunjmNb.M0TI/WNlnrEUjf1RrFdhYQMZ9xRcYvNMlyDO1WPflqGCMau1"
+    home: /spatz
+    move_home: true
+
+- name: "copy ansible init script"
+  become: true
+  copy:
+    src: ../init.sh
+    dest: /spatz/ansible_init.sh
+    owner: spatz
+    group: spatz
+    mode: 775
