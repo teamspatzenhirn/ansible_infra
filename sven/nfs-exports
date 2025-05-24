@@ -1,1 +1,5 @@
-/mnt/auxiliary 134.60.25.0/24(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt)
+/mnt/user-home 134.60.25.0/24(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt)
+
+/mnt/aufnahmen 134.60.25.0/24(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt)
+/mnt/aufnahmen 134.60.113.17(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # spatz1 wifi
+/mnt/aufnahmen 134.60.113.18(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # spatz2 wifi
