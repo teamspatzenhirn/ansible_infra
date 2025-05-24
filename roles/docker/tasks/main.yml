@@ -20,15 +20,16 @@
     state: latest
     update_cache: yes
 
-- name: "docker: obtain apt signing key"
+- name: "docker: add docker repo"
   become: true
-  apt_key:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
-
-- name: "docker: add apt repo"
-  become: true
-  apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+  deb822_repository:
+    name: docker
+    types: deb
+    architectures: amd64
+    uris: https://download.docker.com/linux/ubuntu
+    suites: '{{ ansible_distribution_release }}'
+    components: stable
+    signed_by: https://download.docker.com/linux/ubuntu/gpg
 
 - name: "docker: install and update"
   become: true

@@ -1,5 +1,5 @@
 - name: "sven-compose: copy to ansible user home"
-  ansible.builtin.copy:
+  copy:
     src: sven
     dest: /home/ansible
     owner: ansible
