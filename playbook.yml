@@ -1,6 +1,7 @@
 - name: Infra
   hosts: server
   roles:
-    # - update
-    # - docker
+    - update
+    - nfs-server
+    - docker
     - sven-compose

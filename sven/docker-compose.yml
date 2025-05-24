@@ -1,9 +1,5 @@
 services:
 
-  # kanidm:
-  #   container_name: kanidm
-  #   image: kanidm/kanidm
-
   certbot-spatz:
     image: serversideup/certbot-dns-cloudflare
     container_name: certbot-spatz
@@ -80,6 +76,9 @@ services:
     image: httpd:2.4-alpine
     container_name: httpd
     restart: always
+    volumes:
+      - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - /mnt/auxiliary/static_files:/static_files:ro
     labels:
       traefik.enable: true
       traefik.http.services.httpd.loadbalancer.server.port: 80
@@ -87,3 +86,20 @@ services:
       traefik.http.routers.httpd.entrypoints: websecure
       traefik.http.routers.httpd.service: httpd
       traefik.http.routers.httpd.tls: true
+
+  kanidm:
+    image: kanidm/server:1.6.3
+    container_name: kanidm
+    restart: always
+    volumes:
+      - ./certbot:/certs:ro
+      - ./kanidm/server.toml:/data/server.toml:ro
+      - /mnt/auxiliary/kanidm:/data
+    labels:
+      traefik.enable: true
+      traefik.http.services.kanidm.loadbalancer.server.port: 8443
+      traefik.http.services.kanidm.loadbalancer.server.scheme: https
+      traefik.http.routers.kanidm.rule: Host(`idm.${DOMAIN}`)
+      traefik.http.routers.kanidm.entrypoints: websecure
+      traefik.http.routers.kanidm.service: kanidm
+      traefik.http.routers.kanidm.tls: true
