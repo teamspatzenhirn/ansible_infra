@@ -1,3 +1,10 @@
+- name: "ensure local group users does not exist"
+  become: true
+  group:
+    name: users
+    local: true
+    state: absent
+
 - name: "ensure config folder exists"
   become: true
   file: path=/etc/kanidm state=directory
@@ -22,7 +29,7 @@
     types: deb
     architectures: amd64
     uris: https://kanidm.github.io/kanidm_ppa
-    suites: '{{ ansible_distribution_release }}'
+    suites: "{{ ansible_distribution_release }}"
     components: stable
     signed_by: https://kanidm.github.io/kanidm_ppa/kanidm_ppa.asc
 
@@ -75,8 +82,8 @@
   become: true
   lineinfile:
     path: /etc/nsswitch.conf
-    regexp: '^{{ item }}:'
-    line: '{{ item }}: kanidm compat'
+    regexp: "^{{ item }}:"
+    line: "{{ item }}: kanidm compat"
   with_items:
     - passwd
     - group
@@ -85,8 +92,8 @@
   become: true
   lineinfile:
     path: /etc/nsswitch.conf
-    regexp: '^shadow:'
-    line: 'shadow: files'
+    regexp: "^shadow:"
+    line: "shadow: files"
 
 - name: "update sshd to check for authorized keys from kanidm"
   become: true

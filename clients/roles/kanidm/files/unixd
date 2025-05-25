@@ -139,7 +139,7 @@ gid_attr_map = "name"
 #
 # Default: empty set (no access allowed)
 
-pam_allowed_login_groups = ["pc-users"]
+pam_allowed_login_groups = ["users"]
 
 # Allow extension (mapping) of a local system groups members with members from a
 # kanidm provided group. An example of this is that the local group
@@ -154,13 +154,8 @@ pam_allowed_login_groups = ["pc-users"]
 
 [[kanidm.map_group]]
 local = "docker"
-with = "docker-users"
+with = "docker_users"
 
 [[kanidm.map_group]]
 local = "plugdev"
-with = "plugdev-users"
-
-# temporary - remove local users group at some point
-[[kanidm.map_group]]
-local = "users"
-with = "pc-users"
+with = "plugdev_users"
