@@ -98,7 +98,7 @@ home_mount_prefix = "/u/"
 #
 # Default: false
 
-use_etc_skel = true
+# use_etc_skel = false
 
 
 # Chooses which attribute is used for domain local users in presentation of the uid value.

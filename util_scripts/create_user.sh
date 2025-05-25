@@ -32,8 +32,12 @@ esac
 
 user_dir="/u/${username}"
 if [ -d "$user_dir" ]; then
-  echo "Ensuring home directory permissions are correct."
-  sudo chown -R $username:users "$user_dir"
+  echo "Ensuring home directory permissions are correct (this can take a while for existing users)"
+else
+  echo "Generating new home directory from /opt/skel"
+  cp -R /opt/skel "$user_dir"
 fi
 
-echo "User creation complete."
+sudo chown -R $username:users "$user_dir"
+
+echo "User creation complete"

@@ -8,7 +8,7 @@
   file: path={{ item }} state=directory
   with_items:
     - /u
-    - /etc/skel
+    - /opt/skel
     - /opt/aufnahmen
 
 - name: "NFS homes at /u"
@@ -19,12 +19,12 @@
     line: 'sven.spatz.wtf:/mnt/user-home /u nfs auto,fsc,_netdev 0 0'
   register: homes
 
-- name: "NFS skel at /etc/skel"
+- name: "NFS skel at /opt/skel"
   become: true
   lineinfile:
     path: /etc/fstab
     regexp: '^sven.spatz.wtf:/mnt/auxiliary/skel '
-    line: 'sven.spatz.wtf:/mnt/auxiliary/skel /etc/skel nfs ro,hard,intr,fsc,auto,_netdev 0 0'
+    line: 'sven.spatz.wtf:/mnt/auxiliary/skel /opt/skel nfs ro,hard,intr,fsc,auto,_netdev 0 0'
   register: skel
 
 - name: "NFS homes at /opt/aufnahmen"
@@ -54,3 +54,4 @@
 - name: "mount all"
   become: true
   command: /bin/mount -a
+  when: homes.changed or skel.changed or aufnahmen.changed or old.changed
