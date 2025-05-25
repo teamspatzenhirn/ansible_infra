@@ -11,14 +11,18 @@
       - runc
     state: absent
 
-- name: "install prerequisites via apt"
+- name: "remove legacy apt key"
   become: true
-  apt:
-    name:
-      - ca-certificates
-      - curl
-    state: latest
-    update_cache: yes
+  apt_key:
+    keyring: /etc/apt/trusted.gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: absent
+
+- name: "remove legacy apt repo"
+  become: true
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: absent
 
 - name: "add docker repo"
   become: true
@@ -27,7 +31,7 @@
     types: deb
     architectures: amd64
     uris: https://download.docker.com/linux/ubuntu
-    suites: '{{ ansible_distribution_release }}'
+    suites: "{{ ansible_distribution_release }}"
     components: stable
     signed_by: https://download.docker.com/linux/ubuntu/gpg
 
@@ -43,9 +47,9 @@
     state: latest
     update_cache: yes
 
-- name: "add docker group to ansible user"
+- name: "ensure local group docker exists"
   become: true
-  user:
-    name: ansible
-    append: true
-    groups: docker
+  group:
+    name: docker
+    gid: 800
+    state: present
