@@ -7,3 +7,5 @@
     - spatz-user
     - mounts
     - kanidm
+    - kill-snap-get-flatpak
+    - desktop-programs

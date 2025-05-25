@@ -1,0 +1,10 @@
+- name: "install flatpaks"
+  become: true
+  flatpak:
+    name:
+      - org.mozilla.firefox
+      - com.google.Chrome
+      - com.jetbrains.CLion
+      - com.discordapp.Discord
+      - com.spotify.Client
+    state: latest

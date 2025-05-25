@@ -1,0 +1,78 @@
+# https://markaicode.com/replace-snap-with-flatpak-ubuntu-24-04/
+
+- name: "install flatpak"
+  become: true
+  apt:
+    name: flatpak
+    state: present
+
+- name: "add flatpak remote"
+  become: true
+  flatpak_remote:
+    name: flathub
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    state: present
+
+- name: "install gnome-software-plugin-flatpak & gnome-software"
+  become: true
+  apt:
+    name:
+      - gnome-software-plugin-flatpak
+      - gnome-software
+    state: present
+
+- name: "remove snap-store"
+  become: true
+  apt:
+    name: snap-store
+    state: absent
+
+- name: "gather package facts"
+  package_facts:
+    manager: apt
+
+- name: "remove all installed snap packages & disable services"
+  become: true
+  shell: |
+    for snap in $(snap list | awk '{print $1}' | grep -v "^Name$"); do
+      snap remove --purge "$snap"
+    done
+
+    systemctl disable snapd.service
+    systemctl disable snapd.socket
+    systemctl disable snapd.seeded.service
+  when: "'snapd' in ansible_facts.packages"
+
+- name: "remove snap"
+  become: true
+  apt:
+    name: snapd
+    state: absent
+    purge: true
+
+# clean up of ~/snap shall be done manually
+- name: "clean up snap folders"
+  become: true
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /snap
+    - /var/snap
+    - /var/lib/snapd
+
+- name: "prevent snap from coming back"
+  become: true
+  copy:
+    src: nosnap.pref
+    dest: /etc/apt/preferences.d/nosnap.pref
+    owner: root
+    group: root
+    mode: 0644
+  register: nosnap
+
+- name: "update apt cache"
+  become: true
+  apt:
+    update_cache: yes
+  when: nosnap.changed
