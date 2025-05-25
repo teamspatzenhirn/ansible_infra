@@ -58,12 +58,17 @@
 
 - name: "restart unixd service"
   become: true
-  shell: systemctl restart kanidm-unixd
+  systemd_service:
+    name: kanidm-unixd
+    state: restarted
   when: configs.changed
 
 - name: "restart unixd-tasks service"
   become: true
-  shell: systemctl daemon-reload && systemctl restart kanidm-unixd-tasks
+  systemd_service:
+    name: kanidm-unixd-tasks
+    daemon_reload: true
+    state: restarted
   when: modify.changed or configs.changed
 
 - name: "update nsswitch.conf"
@@ -82,3 +87,20 @@
     path: /etc/nsswitch.conf
     regexp: '^shadow:'
     line: 'shadow: files'
+
+- name: "update sshd to check for authorized keys from kanidm"
+  become: true
+  copy:
+    src: kanidm_authorizedkeys.conf
+    dest: /etc/ssh/sshd_config.d/
+    owner: root
+    group: root
+    mode: 0644
+  register: sshd_conf
+
+- name: "reload sshd"
+  become: true
+  systemd_service:
+    name: sshd
+    state: reloaded
+  when: sshd_conf.changed
