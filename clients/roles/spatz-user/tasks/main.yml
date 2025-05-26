@@ -13,4 +13,13 @@
     dest: /spatz/ansible_init.sh
     owner: spatz
     group: spatz
-    mode: 775
+    mode: 0775
+
+- name: "copy util scripts"
+  become: true
+  copy:
+    src: ../util_scripts/
+    dest: /spatz/
+    owner: spatz
+    group: spatz
+    mode: 0775
