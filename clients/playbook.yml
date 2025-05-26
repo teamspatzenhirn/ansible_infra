@@ -2,10 +2,11 @@
   hosts: pc
   roles:
     - update
+    - essential-tools
+    - kanidm
     # - docker
     - ansible-user
     - spatz-user
     - mounts
-    - kanidm
     - kill-snap-get-flatpak
     - desktop-programs

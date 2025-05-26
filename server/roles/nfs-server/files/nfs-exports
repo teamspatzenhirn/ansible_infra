@@ -1,12 +1,14 @@
 /mnt/user-home 134.60.25.0/24(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt)
 /mnt/user-home 134.60.113.31(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # pc1 (in Werkstatt)
+/mnt/user-home 134.60.113.50(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # pc-werkstatt-2
 
 
 /mnt/auxiliary/skel 134.60.25.0/24(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt)
 /mnt/auxiliary/skel 134.60.113.31(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # pc1 (in Werkstatt)
+/mnt/auxiliary/skel 134.60.113.50(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # pc-werkstatt-2
 
 /mnt/aufnahmen 134.60.25.0/24(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt)
 /mnt/aufnahmen 134.60.113.17(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # spatz1 wifi
 /mnt/aufnahmen 134.60.113.18(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # spatz2 wifi
 /mnt/aufnahmen 134.60.113.31(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # pc1 (in Werkstatt)
-
+/mnt/aufnahmen 134.60.113.50(no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt) # pc-werkstatt-2

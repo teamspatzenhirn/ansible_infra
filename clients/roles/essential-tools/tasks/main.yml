@@ -1,0 +1,44 @@
+- name: Install common packages
+  become: true
+  apt:
+    state: present
+    update_cache: true
+    name:
+      - libuser
+      - graphviz
+      - tmux
+      - figlet
+      - gimp
+      - aria2
+      - python3
+      - python3-pip
+      - arandr
+      - thunar-archive-plugin
+      - make
+      - ninja-build
+      - git
+      - meld
+      - x11vnc
+      - htop
+      - btop
+      - iftop
+      - neovim
+      - ncdu
+      - xdotool
+      - glade
+      - gparted
+      - tree
+      - tigervnc-viewer
+      - tigervnc-scraping-server
+      - tigervnc-standalone-server
+      - xfce4
+      - xfce4-whiskermenu-plugin
+      - libperl-dev
+      - clinfo
+      - parallel
+      - curl
+      - bat
+      - speedtest-cli
+      - vlc
+      - neofetch
+      - mesa-utils

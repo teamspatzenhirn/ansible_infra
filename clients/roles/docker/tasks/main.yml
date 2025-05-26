@@ -51,5 +51,6 @@
   become: true
   group:
     name: docker
+    local: true
     gid: 800
     state: present
