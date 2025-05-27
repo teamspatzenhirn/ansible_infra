@@ -1,0 +1,15 @@
+- name: Install common packages
+  become: true
+  apt:
+    state: present
+    update_cache: true
+    name:
+      - libuser
+      - tmux
+      - btop
+      - htop
+      - speedtest-cli
+      - net-tools
+      - neofetch
+      - ncdu
+      - git

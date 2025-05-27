@@ -2,6 +2,7 @@
   hosts: server
   roles:
     - update
+    - essential-tools
     - nfs-server
     - docker
     - sven-compose
