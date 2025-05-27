@@ -5,3 +5,4 @@
     - nfs-server
     - docker
     - sven-compose
+    - pulseaudio

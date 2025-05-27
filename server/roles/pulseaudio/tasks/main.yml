@@ -1,0 +1,34 @@
+- name: "install pulseaudio"
+  become: true
+  apt:
+    name: pulseaudio
+    state: present
+
+- name: "copy service file"
+  become: true
+  copy:
+    src: pulseaudio.service
+    dest: /etc/systemd/system/pulseaudio.service
+    owner: root
+    group: root
+    mode: 0644
+  register: service
+
+- name: "copy networked.pa config"
+  become: true
+  copy:
+    src: networked.pa
+    dest: /etc/pulse/system.pa.d/
+    owner: root
+    group: root
+    mode: 0644
+  register: config
+
+- name: "enable / reload service"
+  become: true
+  systemd_service:
+    daemon_reload: true
+    name: pulseaudio
+    enabled: true
+    state: restarted
+  when: service.changed or config.changed

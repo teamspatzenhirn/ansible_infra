@@ -1,0 +1,12 @@
+- name: "remove legacy PULSE_SERVER environment setup"
+  become: true
+  file:
+    path: /etc/profile.d/envPulseaudio.sh
+    state: absent
+
+- name: "configure server in client.conf"
+  become: true
+  lineinfile:
+    path: /etc/pulse/client.conf
+    line: "default-server = tcp:sven.spatz.wtf:4713"
+    regexp: "^(; )?default-server ="
