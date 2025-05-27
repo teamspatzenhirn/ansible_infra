@@ -1,6 +1,7 @@
 - name: PCs
   hosts: pc
   roles:
+    - remove-legacy-stuff
     - update
     - essential-tools
     - kanidm

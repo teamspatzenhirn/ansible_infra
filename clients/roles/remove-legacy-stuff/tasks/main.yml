@@ -1,0 +1,11 @@
+- name: "remove LDAP stuff"
+  become: true
+  apt:
+    name:
+      - nslcd
+      - nslcd-utils
+      - ldapscripts
+      - libpam-ldapd
+      - libnss-ldapd
+    state: absent
+    purge: true
