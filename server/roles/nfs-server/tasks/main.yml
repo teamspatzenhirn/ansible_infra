@@ -14,15 +14,29 @@
     - rpcbind
     - nfs-kernel-server
 
-- name: "copy exports definition"
+- name: "generate exports definition"
   become: true
-  copy:
-    src: nfs-exports
+  vars:
+    export_args: "no_root_squash,rw,nohide,insecure,no_subtree_check,async,crossmnt"
+    exports:
+      - /mnt/user-home
+      - /mnt/auxiliary/skel
+      - /mnt/auxiliary/sim_tracks
+      - /mnt/aufnahmen
+    common_hosts:
+      - 134.60.25.0/24
+      - 134.60.113.31
+      - 134.60.113.50
+    additional_aufnahmen_hosts:
+      - 134.60.113.17
+      - 134.60.113.18
+  template:
+    src: exports.j2
     dest: /etc/exports
     owner: root
     group: root
     mode: 0644
-  register: copy
+  register: generate
 
 - name: "copy config"
   become: true
@@ -37,4 +51,4 @@
 - name: "reload NFS & exportfs"
   become: true
   shell: systemctl reload nfs-kernel-server && exportfs -a
-  when: copy.changed or config.changed
+  when: generate.changed or config.changed

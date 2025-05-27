@@ -10,48 +10,57 @@
     - /u
     - /opt/skel
     - /opt/aufnahmen
+    - /opt/sim_tracks
 
 - name: "NFS homes at /u"
   become: true
   lineinfile:
     path: /etc/fstab
     regexp: '^(eric|sven).spatz.wtf:/(home|mnt/user\-home) '
-    line: 'sven.spatz.wtf:/mnt/user-home /u nfs auto,fsc,_netdev 0 0'
+    line: "sven.spatz.wtf:/mnt/user-home /u nfs auto,fsc,_netdev 0 0"
   register: homes
 
 - name: "NFS skel at /opt/skel"
   become: true
   lineinfile:
     path: /etc/fstab
-    regexp: '^sven.spatz.wtf:/mnt/auxiliary/skel '
-    line: 'sven.spatz.wtf:/mnt/auxiliary/skel /opt/skel nfs ro,hard,intr,fsc,auto,_netdev 0 0'
+    regexp: "^sven.spatz.wtf:/mnt/auxiliary/skel "
+    line: "sven.spatz.wtf:/mnt/auxiliary/skel /opt/skel nfs ro,hard,intr,fsc,auto,_netdev 0 0"
   register: skel
 
-- name: "NFS homes at /opt/aufnahmen"
+- name: "NFS aufnahmen at /opt/aufnahmen"
   become: true
   lineinfile:
     path: /etc/fstab
-    regexp: '^(eric|sven).spatz.wtf:/(opt|mnt)/aufnahmen '
-    line: 'sven.spatz.wtf:/mnt/aufnahmen /opt/aufnahmen nfs ro,hard,intr,fsc,auto,_netdev 0 0'
+    regexp: "^(eric|sven).spatz.wtf:/(opt|mnt)/aufnahmen "
+    line: "sven.spatz.wtf:/mnt/aufnahmen /opt/aufnahmen nfs ro,hard,intr,fsc,auto,_netdev 0 0"
   register: aufnahmen
+
+- name: "NFS sim_tracks at /opt/sim_tracks"
+  become: true
+  lineinfile:
+    path: /etc/fstab
+    regexp: "^sven.spatz.wtf:/mnt/auxiliary/sim_tracks "
+    line: "sven.spatz.wtf:/mnt/auxiliary/sim_tracks /opt/sim_tracks nfs auto,fsc,_netdev 0 0"
+  register: sim_tracks
 
 - name: "remove old and failed spatz mount hacky hack"
   become: true
   lineinfile:
     path: /etc/fstab
     state: absent
-    regexp: '{{ item }}'
+    regexp: "{{ item }}"
   with_items:
-    - '^/ /mnt/localroot '
-    - '^/mnt/localroot/home/spatz '
+    - "^/ /mnt/localroot "
+    - "^/mnt/localroot/home/spatz "
   register: old
 
 - name: "daemon reload"
   become: true
   shell: systemctl daemon-reload
-  when: homes.changed or skel.changed or aufnahmen.changed or old.changed
+  when: homes.changed or skel.changed or aufnahmen.changed or sim_tracks.changed or old.changed
 
 - name: "mount all"
   become: true
   command: /bin/mount -a
-  when: homes.changed or skel.changed or aufnahmen.changed or old.changed
+  when: homes.changed or skel.changed or aufnahmen.changed or sim_tracks.changed or old.changed

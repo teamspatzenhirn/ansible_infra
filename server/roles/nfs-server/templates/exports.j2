@@ -1,0 +1,10 @@
+{% for mnt in exports -%}
+{% for host in common_hosts -%}
+{{ mnt }} {{ host }}({{ export_args }})
+{% endfor %}
+
+{% endfor -%}
+
+{% for host in additional_aufnahmen_hosts -%}
+/mnt/aufnahmen {{ host }}({{ export_args }})
+{% endfor %}
