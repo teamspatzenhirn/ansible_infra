@@ -1,4 +1,4 @@
-- name: "nfs-server: install nfs-kernel-server"
+- name: "install nfs-kernel-server"
   become: true
   apt:
     name:
@@ -6,7 +6,7 @@
     state: latest
     update_cache: yes
 
-- name: "nfs-server: enable rpcbind nfs-kernel-server"
+- name: "enable rpcbind nfs-kernel-server"
   service:
     name: "{{ item }}"
     enabled: yes
@@ -14,7 +14,7 @@
     - rpcbind
     - nfs-kernel-server
 
-- name: "nfs-server: copy exports definition"
+- name: "copy exports definition"
   become: true
   copy:
     src: nfs-exports
@@ -24,7 +24,17 @@
     mode: 0644
   register: copy
 
-- name: "nfs-server: reload NFS & exportfs"
+- name: "copy config"
+  become: true
+  copy:
+    src: nfs.conf
+    dest: /etc/nfs.conf.d/nfs.conf
+    owner: root
+    group: root
+    mode: 0644
+  register: config
+
+- name: "reload NFS & exportfs"
   become: true
   shell: systemctl reload nfs-kernel-server && exportfs -a
-  when: copy.changed
+  when: copy.changed or config.changed
