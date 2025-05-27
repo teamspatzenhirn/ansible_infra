@@ -10,3 +10,4 @@
     - mounts
     - kill-snap-get-flatpak
     - desktop-programs
+    - shells

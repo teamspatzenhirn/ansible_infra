@@ -1,0 +1,7 @@
+- name: "install shells"
+  become: true
+  apt:
+    name:
+      - bash
+      - zsh
+      - fish
