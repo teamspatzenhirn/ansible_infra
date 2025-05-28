@@ -16,3 +16,8 @@ ansible-playbook playbook.yml -i inventory.yml
 > Das Repository enthält aus offensichtlichen Gründen **NICHT** den privaten SSH-Key des Ansible Users.
 
 Mehr zu den Playbooks ist entsprechend der READMEs in [`clients`](clients/) bzw [`server`](server/) zu entnehmen.
+
+## Utilities
+
+Unter [`util_scripts`](util_scripts/) sind einige nützliche Skripte zur Nutzerverwaltung enthalten. \
+Diese werden auch im client Playbook in die Heimverzeichnisse der lokalen Spatz User kopiert.
