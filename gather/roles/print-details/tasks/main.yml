@@ -1,0 +1,10 @@
+- name: Print all available ansible_facts
+  ansible.builtin.debug:
+    var: ansible_facts
+
+- name: Display command outputs
+  ansible.builtin.debug:
+    msg: "{{ item.stdout_lines }}"
+  loop: "{{ results.results }}"
+  loop_control:
+    label: "{{ item.cmd }}"

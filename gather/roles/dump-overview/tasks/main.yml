@@ -1,0 +1,11 @@
+- name: create folder
+  ansible.builtin.file: 
+   path: "['overview']"
+   state: directory
+  delegate_to: localhost
+- name: dump overview
+  ansible.builtin.template: 
+    src: "overview.j2"
+    dest: "['overview']/{{ ansible_hostname }}.txt"
+  delegate_to: localhost
+  changed_when: true

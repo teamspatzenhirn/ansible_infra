@@ -1,0 +1,29 @@
+- name: create folder
+  ansible.builtin.file: 
+   path: "['ansible_facts']"
+   state: directory
+  delegate_to: localhost
+- name: dump all available ansible_facts
+  ansible.builtin.template: 
+    src: "ansible-facts.j2"
+    dest: "['ansible_facts']/{{ ansible_hostname }}.yml"
+  delegate_to: localhost
+
+- name: create folder
+  ansible.builtin.file: 
+   path: "{{ item.cmd }}"
+   state: directory
+  delegate_to: localhost
+  loop: "{{ results.results }}"
+  loop_control:
+    label: "{{ item.cmd }}"
+
+- name: dump command outputs
+  ansible.builtin.template: 
+    src: "item-stdout.j2"
+    dest: "{{ item.cmd }}/{{ ansible_hostname }}.txt"
+  delegate_to: localhost
+  loop: "{{ results.results }}"
+  loop_control:
+    label: "{{ item.cmd }}"
+  changed_when: true

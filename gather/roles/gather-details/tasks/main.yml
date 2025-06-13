@@ -1,0 +1,22 @@
+- name: Run system info commands
+  become: true
+  ansible.builtin.command: "{{ item }}"
+  loop:
+    - dmidecode
+    - lscpu
+    - neofetch --stdout
+    - nvidia-smi
+  register: results
+  changed_when: false
+  ignore_errors: true
+
+- name: Print all available ansible_facts
+  ansible.builtin.debug:
+    var: ansible_facts
+
+- name: Display command outputs
+  ansible.builtin.debug:
+    msg: "{{ item.stdout_lines }}"
+  loop: "{{ results.results }}"
+  loop_control:
+    label: "{{ item.cmd }}"

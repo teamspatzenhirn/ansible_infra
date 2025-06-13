@@ -1,0 +1,30 @@
+- name: detect RAM information
+  ansible.builtin.shell: "dmidecode -t memory | grep -E \"Size|Manufacturer|Memory Device|Type: DDR|Capacity|Devices|Memory Array\" --color=never"
+  become: true
+  register: ram
+  changed_when: false
+
+- name: detect GPU information
+  ansible.builtin.shell: "nvidia-smi -L"
+  become: true
+  register: gpu
+  ignore_errors: true
+  changed_when: false
+
+- name: detect CPU information
+  ansible.builtin.shell: "cat /proc/cpuinfo | grep -E \"model name|cpu cores\" --color=never | sort -r | uniq"
+  become: true
+  register: cpu
+  changed_when: false
+
+- name: detect disk information
+  ansible.builtin.shell: "parted -l"
+  become: true
+  register: disk
+  changed_when: false
+
+- name: detect disk usage information
+  ansible.builtin.shell: "LANG=C.UTF8 df -h | grep -E \"Filesyste|^/dev/\" --color=never"
+  become: true
+  register: diskusage
+  changed_when: false

@@ -1,0 +1,19 @@
+- name: show RAM information
+  ansible.builtin.debug:
+    msg: "{{ ram.stdout_lines }}"
+
+- name: show GPU information
+  ansible.builtin.debug:
+    msg: "{{ gpu.stdout_lines }}"
+
+- name: show CPU information
+  ansible.builtin.debug:
+    msg: "{{ cpu.stdout_lines }}"
+
+- name: show disk information
+  ansible.builtin.debug:
+    msg: "{{ disk.stdout_lines }}"
+
+- name: show disk usage information
+  ansible.builtin.debug:
+    msg: "{{ diskusage.stdout_lines }}"

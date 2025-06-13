@@ -1,0 +1,14 @@
+---
+- name: Gather PC specific facts
+  hosts: pc
+  gather_facts: yes
+  roles:
+#    - print-details
+    - dump-details
+    - print-overview
+    - dump-overview
+
+  tasks:
+    - name: Display system information
+      ansible.builtin.debug:
+        msg: "You are running {{ ansible_distribution }} {{ ansible_distribution_version }}"
