@@ -6,6 +6,7 @@
     - lscpu
     - neofetch --stdout
     - nvidia-smi
+    - ifconfig -a
   register: results
   changed_when: false
   ignore_errors: true

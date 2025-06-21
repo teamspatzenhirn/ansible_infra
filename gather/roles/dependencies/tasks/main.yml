@@ -1,0 +1,8 @@
+- name: install dependencies
+  become: true
+  apt:
+    state: present
+    update_cache: true
+    name:
+      - neofetch
+      - net-tools

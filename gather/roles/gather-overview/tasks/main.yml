@@ -28,3 +28,9 @@
   become: true
   register: diskusage
   changed_when: false
+
+- name: detect network interface information
+  ansible.builtin.shell: "ip --brief addr | grep -vE '(^docker|^veth|^lo)'"
+  become: true
+  register: network
+  changed_when: false  

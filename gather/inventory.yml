@@ -13,3 +13,18 @@ pc:
     pc13:
     pc-werkstatt-2:
     pc1:
+    pcXX:
+    ci-werkstatt-1:
+      ansible_host: 100.120.206.100
+      ansible_ssh_port: 22
+    ci-werkstatt-2:
+      ansible_host: 100.91.158.20
+      ansible_ssh_port: 22
+    ci-werkstatt-3:
+      ansible_host: 100.124.19.52
+      ansible_ssh_port: 22
+    ci-werkstatt-4:
+      ansible_host: 100.124.29.45
+      ansible_ssh_port: 22
+    sven:
+    eric:

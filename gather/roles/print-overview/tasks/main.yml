@@ -17,3 +17,7 @@
 - name: show disk usage information
   ansible.builtin.debug:
     msg: "{{ diskusage.stdout_lines }}"
+
+- name: show network interface information
+  ansible.builtin.debug:
+    msg: "{{ network.stdout_lines }}"

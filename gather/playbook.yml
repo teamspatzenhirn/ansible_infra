@@ -2,6 +2,7 @@
 - name: Gather PC specific facts
   hosts: pc
   gather_facts: yes
+
   roles:
 #    - print-details
     - dump-details
