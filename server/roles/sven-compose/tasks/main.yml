@@ -7,6 +7,7 @@
   register: copy
 
 - name: "docker compose up"
+  become: true
   community.docker.docker_compose_v2:
     project_src: /home/ansible/sven
     remove_orphans: true
