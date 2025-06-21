@@ -1,12 +1,11 @@
 services:
-
   certbot-spatz:
     image: serversideup/certbot-dns-cloudflare
     container_name: certbot-spatz
     restart: always
     # user: "${UID}:${GID}"
     volumes:
-      - ./certbot:/etc/letsencrypt
+      - certs:/etc/letsencrypt
     environment:
       CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_API_TOKEN}"
       CERTBOT_EMAIL: "${CERTBOT_EMAIL}"
@@ -19,7 +18,7 @@ services:
     restart: always
     # user: "${UID}:${GID}"
     volumes:
-      - ./certbot:/etc/letsencrypt
+      - certs:/etc/letsencrypt
     environment:
       CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_API_TOKEN}"
       CERTBOT_EMAIL: "${CERTBOT_EMAIL}"
@@ -32,14 +31,14 @@ services:
     restart: always
     # user: "${UID}:${GID}"
     ports:
-      - "80:80/tcp"   # web
+      - "80:80/tcp" # web
       - "443:443/tcp" # websecure
     security_opt:
       - no-new-privileges:true
     volumes:
       - ./traefik/traefik.yml:/traefik.yml
       - ./traefik/rules:/rules
-      - ./certbot:/certs:ro
+      - certs:/certs:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -60,10 +59,10 @@ services:
       - "2121:2121"
       - "2022:2022"
     # volumes:
-      # - # add whatever folders we need
+    # - # add whatever folders we need
     # environment:
-      # - SFTPGO_DATA_PROVIDER_CREATE_DEFAULT_ADMIN: true
-      # - SFTPGO_FTPD_BINDINGS_0_PORT: 2121
+    # - SFTPGO_DATA_PROVIDER_CREATE_DEFAULT_ADMIN: true
+    # - SFTPGO_FTPD_BINDINGS_0_PORT: 2121
     labels:
       traefik.enable: true
       traefik.http.services.sftpgo-ui.loadbalancer.server.port: 8080
@@ -78,7 +77,7 @@ services:
     restart: always
     volumes:
       - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
-      - /mnt/auxiliary/static_files:/static_files:ro
+      - httpd_static_files:/static_files:ro
     labels:
       traefik.enable: true
       traefik.http.services.httpd.loadbalancer.server.port: 80
@@ -92,9 +91,9 @@ services:
     container_name: kanidm
     restart: always
     volumes:
-      - ./certbot:/certs:ro
+      - certs:/certs:ro
       - ./kanidm/server.toml:/data/server.toml:ro
-      - /mnt/auxiliary/kanidm:/data
+      - kanidm_data:/data
     labels:
       traefik.enable: true
       traefik.http.services.kanidm.loadbalancer.server.port: 8443
@@ -103,3 +102,23 @@ services:
       traefik.http.routers.kanidm.entrypoints: websecure
       traefik.http.routers.kanidm.service: kanidm
       traefik.http.routers.kanidm.tls: true
+
+volumes:
+  certs:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "./certbot"
+  httpd_static_files:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "/mnt/auxiliary/static_files"
+  kanidm_data:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "/mnt/auxiliary/kanidm"
