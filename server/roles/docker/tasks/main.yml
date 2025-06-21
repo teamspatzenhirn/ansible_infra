@@ -1,4 +1,4 @@
-- name: "docker: remove legacy packages"
+- name: "remove legacy packages"
   become: true
   apt:
     name:
@@ -11,7 +11,7 @@
       - runc
     state: absent
 
-- name: "docker: install prerequisites via apt"
+- name: "install prerequisites via apt"
   become: true
   apt:
     name:
@@ -20,18 +20,18 @@
     state: latest
     update_cache: yes
 
-- name: "docker: add docker repo"
+- name: "add docker repo"
   become: true
   deb822_repository:
     name: docker
     types: deb
     architectures: amd64
     uris: https://download.docker.com/linux/ubuntu
-    suites: '{{ ansible_distribution_release }}'
+    suites: "{{ ansible_distribution_release }}"
     components: stable
     signed_by: https://download.docker.com/linux/ubuntu/gpg
 
-- name: "docker: install and update"
+- name: "install and update"
   become: true
   apt:
     name:
@@ -43,7 +43,7 @@
     state: latest
     update_cache: yes
 
-- name: "docker: add docker group to ansible user"
+- name: "add docker group to ansible user"
   become: true
   user:
     name: ansible

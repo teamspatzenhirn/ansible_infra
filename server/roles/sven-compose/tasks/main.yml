@@ -1,4 +1,4 @@
-- name: "sven-compose: copy to ansible user home"
+- name: "copy to ansible user home"
   copy:
     src: sven
     dest: /home/ansible
@@ -6,7 +6,7 @@
     group: ansible
   register: copy
 
-- name: "sven-compose: docker compose up"
+- name: "docker compose up"
   community.docker.docker_compose_v2:
     project_src: /home/ansible/sven
     remove_orphans: true
