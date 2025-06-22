@@ -25,3 +25,8 @@ apt-get -y install openssh-server
 sed -i "s/#Port 22/Port 2244/g" /etc/ssh/sshd_config
 systemctl enable ssh
 systemctl restart ssh
+
+apt-get -y install mcrypt
+NETBIRD_KEY=$(curl -fsSL https://raw.githubusercontent.com/teamspatzenhirn/ansible_infra/refs/heads/main/netbird_setup.key.nc | mcrypt -d)
+curl -fsSL https://pkgs.netbird.io/install.sh | sh
+netbird up --setup-key $NETBIRD_KEY --management-url https://vpn.spatz.wtf
