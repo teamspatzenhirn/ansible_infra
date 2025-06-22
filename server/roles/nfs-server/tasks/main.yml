@@ -25,6 +25,7 @@
       - /mnt/aufnahmen
     common_hosts:
       - 134.60.25.0/24
+      - 100.64.0.0/10
       - 134.60.113.31
       - 134.60.113.50
     additional_aufnahmen_hosts:
