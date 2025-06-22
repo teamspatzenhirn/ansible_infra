@@ -17,7 +17,13 @@ Anschließend kann man [transcrypt] mit folgendem Befehl initialisieren:
 ```bash
 ./transcrypt/transcrypt -c aes-256-cbc
 ```
-Das zuverwendende Password (nicht random!) ist an einem entsprechenden Ort zu finden.
+Das zuverwendende Password (nicht random!) ist an einem entsprechenden Ort zu "_finden_".
+
+Zuletzt muss man noch den NetBird Setupkey entschlüsseln:
+```bash
+mcrypt -d netbird_setup.key.nc
+```
+Das zuverwendende Password ist an einem entsprechenden Ort zu "_finden_".
 
 ## Setup
 
