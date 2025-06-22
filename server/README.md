@@ -1,5 +1,8 @@
 # Server
 
+> [!NOTE]
+> Das Playbook geht davon aus, dass die Festplatten bereits an den unten stehenden Stellen gemountet sind.
+
 Der zentrale Server stellt folgende Dienste bereit:
 
 - NFS Shares für:
@@ -10,6 +13,7 @@ Der zentrale Server stellt folgende Dienste bereit:
 - Zentraler Identity Management Provider ([kanidm](https://kanidm.com/)) https://idm.spatz.wtf
 - Pulseaudio Server für alle PCs
 - Static file host unter https://static.spatz.wtf
+- Private VPN Lösung ([NetBird](https://netbird.io)) https://vpn.spatz.wtf
 
 
 Im Server befinden sich folgende Festplatten:
@@ -23,15 +27,3 @@ Im Server befinden sich folgende Festplatten:
 
 > [!CAUTION]
 > Auf der Systemfestplatte selbst dürfen keinerlei Daten gespeichert werden, welche nicht durch eine Neuinstallation und Ausführung des Playbooks wiederhergestellt werden können!
-
-## Deployment
-
-> [!IMPORTANT]
-> Aus Sicherheitsgründen enthält das Repository **NICHT** die `.env` Datei unter `sven/.env`. \
-> Folgender Inhalt sollte in der `.env` Datei sein:
-> ```
-> DOMAIN=spatz.wtf
->
-> CERTBOT_EMAIL=<redacted>
-> CLOUDFLARE_API_TOKEN=<redacted>
-> ```

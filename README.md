@@ -1,19 +1,32 @@
+[transcrypt]: https://github.com/elasticdog/transcrypt
+
 # Teamspatzenhirn Infrastruktur
+
+## Secrets im Repository
+
+> [!IMPORTANT]
+> Wir benutzen [transcrypt](https://github.com/elasticdog/transcrypt) um Dateien verschlüsselt in diesem Repository versionieren zu können, welche unter sonstigen Umständen **KEINES FALLS** in ein Repository gehören.
+
+Nach dem initialen Clonen des Repositories muss man [transcrypt] entsprechend konfigurieren. \
+Falls noch nicht geschehen muss das Submodul, welches [transcrypt] enthält initialisiert werden:
+```bash
+git submodule update --init
+```
+
+Anschließend kann man [transcrypt] mit folgendem Befehl initialisieren:
+```bash
+./transcrypt/transcrypt -c aes-256-cbc
+```
+Das zuverwendende Password (nicht random!) ist an einem entsprechenden Ort zu finden.
 
 ## Setup
 
-Nach einer Neuinstallation von Ubuntu kann mit dem folgenden Befehl der Ansible User mit authorized key erstellt werden:
-```bash
-curl -sSL https://raw.githubusercontent.com/teamspatzenhirn/ansible_infra/refs/heads/main/init.sh | bash
-```
+Für Neuinstallationen von Ubuntu siehe [`UBUNTU_INSTALL`](UBUNTU_INSTALL.md).
 
 Anschließend kann dann das entsprechende Playbook ausgeführt werden (zuerst in den entsprechenden Ordner wechseln):
 ```bash
 ansible-playbook playbook.yml -i inventory.yml
 ```
-
-> [!IMPORTANT]
-> Das Repository enthält aus offensichtlichen Gründen **NICHT** den privaten SSH-Key des Ansible Users.
 
 Mehr zu den Playbooks ist entsprechend der READMEs in [`clients`](clients/) bzw [`server`](server/) zu entnehmen.
 
