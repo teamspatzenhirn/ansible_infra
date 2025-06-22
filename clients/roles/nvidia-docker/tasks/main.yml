@@ -1,0 +1,32 @@
+- name: "add container toolkit repo"
+  become: true
+  deb822_repository:
+    name: nvidia-container-toolkit
+    types: deb
+    uris: https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH)
+    suites: /
+    components:
+    signed_by: https://nvidia.github.io/libnvidia-container/gpgkey
+
+- name: "install and update"
+  become: true
+  apt:
+    name:
+      - nvidia-container-toolkit
+      - nvidia-container-toolkit-base
+      - libnvidia-container-tools
+      - libnvidia-container1
+    state: latest
+    update_cache: yes
+  register: install
+
+- name: "update docker daemon config"
+  become: true
+  shell:
+    cmd: nvidia-ctk runtime configure --runtime=docker
+  when: install.changed
+
+- name: "restart docker"
+  become: true
+  shell: systemctl restart docker
+  when: install.changed

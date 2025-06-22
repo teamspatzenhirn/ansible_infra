@@ -1,0 +1,25 @@
+- name: "remove old dpkg keyring & list"
+  become: true
+  apt:
+    name: cuda-keyring
+    state: absent
+    purge: true
+
+- name: "add nvidia cuda repo"
+  become: true
+  deb822_repository:
+    name: nvidia-cuda
+    types: deb
+    uris: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/
+    suites: /
+    components:
+    signed_by: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/3bf863cc.pub
+
+- name: "install nvidia drivers"
+  become: true
+  apt:
+    name:
+      - nvidia-driver-565
+      - nvidia-opencl-dev
+    state: latest
+    update_cache: yes

@@ -1,0 +1,4 @@
+[[runners]]
+[runners.docker]
+gpus = "all"
+service_gpus = "all"

@@ -1,0 +1,18 @@
+services:
+  runner:
+    image: gitlab/gitlab-runner:alpine-v18.1.0
+    container_name: gitlab-runner
+    restart: always
+    volumes:
+      - runner_data:/etc/gitlab-runner
+      - ./template.toml:/template.toml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  runner_data:
+    name: runner_data
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "./runner_data"

@@ -1,16 +1,44 @@
-- name: PCs
-  hosts: pc
+- name: Common
+  hosts:
+    - pc
+    - ci
+  tags:
+    - pc
+    - ci
   roles:
-    - remove-legacy-stuff
     - update
     - essential-tools
-    - kanidm
     - docker
     - ansible-user
     - spatz-user
+    - dominion_solutions.netbird.netbird
+
+- name: PCs
+  hosts: pc
+  tags:
+    - pc
+  roles:
+    - remove-legacy-stuff
+    - kanidm
     - mounts
     - kill-snap-get-flatpak
     - desktop-programs
     - shells
     - pulseaudio
-    - dominion_solutions.netbird.netbird
+    - nvidia
+    - nvidia-docker
+
+- name: CI
+  hosts: ci
+  tags:
+    - ci
+  roles:
+    - gitlab-runner
+
+- name: GPU
+  hosts: gpu
+  tags:
+    - gpu
+  roles:
+    - nvidia
+    - nvidia-docker

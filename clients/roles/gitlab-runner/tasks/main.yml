@@ -1,0 +1,30 @@
+- name: "copy to ansible user home"
+  copy:
+    src: gitlab-runner
+    dest: /home/ansible
+    owner: ansible
+    group: ansible
+  register: copy
+
+- name: "docker compose up"
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /home/ansible/gitlab-runner
+    remove_orphans: true
+  when: copy.changed
+
+- name: "register runner"
+  become: true
+  shell:
+    executable: /bin/bash
+    chdir: /home/ansible/gitlab-runner
+    cmd: |
+      source .env
+      docker exec gitlab-runner gitlab-runner register \
+        --non-interactive \
+        --template-config /template.toml \
+        --url "https://git.spatz.wtf/" \
+        --token "$RUNNER_TOKEN_{{ inventory_hostname }}" \
+        --executor "docker" \
+        --docker-image "alpine:latest"
+  when: copy.changed
