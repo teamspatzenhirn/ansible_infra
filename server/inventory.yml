@@ -3,6 +3,9 @@ server:
     ansible_user: ansible
     ansible_ssh_port: 2244
     ansible_ssh_private_key_file: ../ansible_key
+    netbird_register: true
+    netbird_mgmt_url: https://vpn.spatz.wtf
+    netbird_setup_key: "{{ lookup('file', '../netbird_setup.key') }}"
   hosts:
     sven:
       ansible_host: sven.spatz.wtf

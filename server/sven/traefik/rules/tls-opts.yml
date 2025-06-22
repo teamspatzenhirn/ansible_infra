@@ -9,3 +9,5 @@ tls:
       keyFile: /certs/live/idm.spatz.wtf/privkey.pem
     - certFile: /certs/live/spatz.wtf/fullchain.pem
       keyFile: /certs/live/spatz.wtf/privkey.pem
+    - certFile: /certs/live/vpn.spatz.wtf/fullchain.pem
+      keyFile: /certs/live/vpn.spatz.wtf/privkey.pem
