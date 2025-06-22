@@ -17,6 +17,7 @@
       - make
       - ninja-build
       - git
+      - mcrypt
       - meld
       - x11vnc
       - htop
