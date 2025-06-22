@@ -29,6 +29,12 @@ Das zuverwendende Password ist an einem entsprechenden Ort zu "_finden_".
 
 Für Neuinstallationen von Ubuntu siehe [`UBUNTU_INSTALL`](UBUNTU_INSTALL.md).
 
+Ansible & requirements installieren:
+```bash
+sudo apt install ansible -y
+ansible-galaxy collection install -f community.general community.docker dominion_solutions.netbird
+```
+
 Anschließend kann dann das entsprechende Playbook ausgeführt werden (zuerst in den entsprechenden Ordner wechseln):
 ```bash
 ansible-playbook playbook.yml -i inventory.yml
