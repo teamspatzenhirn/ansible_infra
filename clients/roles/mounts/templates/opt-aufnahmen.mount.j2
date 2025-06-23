@@ -1,0 +1,14 @@
+[Unit]
+Description=Aufnahmen
+After=network.target
+Requires=wait-for-nfs@{{ mount_hostname }}.service
+After=wait-for-nfs@{{ mount_hostname }}.service
+
+[Mount]
+What={{ mount_hostname }}:/mnt/aufnahmen
+Where=/opt/aufnahmen
+Type=nfs
+Options=ro,hard,intr,auto,fsc,_netdev
+
+[Install]
+WantedBy=multi-user.target

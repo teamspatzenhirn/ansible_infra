@@ -12,36 +12,36 @@
     - /opt/aufnahmen
     - /opt/sim_tracks
 
-- name: "NFS homes at /u"
+- name: "remove fstab NFS homes at /u"
   become: true
   lineinfile:
     path: /etc/fstab
     regexp: '^(eric|sven|pc00).spatz.(wtf|vpn):/(home|mnt/user\-home) '
-    line: "{{ mount_hostname }}:/mnt/user-home /u nfs auto,fsc,{{ mount_extra_args }} 0 0"
+    state: absent
   register: homes
 
-- name: "NFS skel at /opt/skel"
+- name: "remove fstab NFS skel at /opt/skel"
   become: true
   lineinfile:
     path: /etc/fstab
     regexp: "^(sven|pc00).spatz.(wtf|vpn):/mnt/auxiliary/skel "
-    line: "{{ mount_hostname }}:/mnt/auxiliary/skel /opt/skel nfs ro,hard,intr,fsc,auto,{{ mount_extra_args }} 0 0"
+    state: absent
   register: skel
 
-- name: "NFS aufnahmen at /opt/aufnahmen"
+- name: "remove fstab NFS aufnahmen at /opt/aufnahmen"
   become: true
   lineinfile:
     path: /etc/fstab
     regexp: "^(eric|sven|pc00).spatz.(wtf|vpn):/(opt|mnt)/aufnahmen "
-    line: "{{ mount_hostname }}:/mnt/aufnahmen /opt/aufnahmen nfs ro,hard,intr,fsc,auto,{{ mount_extra_args }} 0 0"
+    state: absent
   register: aufnahmen
 
-- name: "NFS sim_tracks at /opt/sim_tracks"
+- name: "remove fstab NFS sim_tracks at /opt/sim_tracks"
   become: true
   lineinfile:
     path: /etc/fstab
     regexp: "^(sven|pc00).spatz.(wtf|vpn):/mnt/auxiliary/sim_tracks "
-    line: "{{ mount_hostname }}:/mnt/auxiliary/sim_tracks /opt/sim_tracks nfs auto,fsc,{{ mount_extra_args }} 0 0"
+    state: absent
   register: sim_tracks
 
 - name: "remove old and failed spatz mount hacky hack"
@@ -55,6 +55,32 @@
     - "^/mnt/localroot/home/spatz "
   register: old
 
+- name: "copy script"
+  become: true
+  copy:
+    src: "wait-for-nfs.sh"
+    dest: /etc/systemd/system/wait-for-nfs.sh
+    owner: root
+    group: root
+    mode: 0755
+  register: copy
+
+- name: template mounts and service
+  become: true
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/systemd/system/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - opt-aufnahmen.mount
+    - opt-sim_tracks.mount
+    - opt-skel.mount
+    - u.mount
+    - wait-for-nfs@.service
+  register: template
+
 - name: "daemon reload"
   become: true
   shell: systemctl daemon-reload
@@ -64,3 +90,17 @@
   become: true
   command: /bin/mount -a
   when: homes.changed or skel.changed or aufnahmen.changed or sim_tracks.changed or old.changed
+
+- name: "enable / reload mounts"
+  become: true
+  systemd_service:
+    daemon_reload: true
+    name: "{{ item }}"
+    enabled: true
+    state: restarted
+  with_items:
+    - opt-aufnahmen.mount
+    - opt-sim_tracks.mount
+    - opt-skel.mount
+    - u.mount
+  when: copy.changed or template.changed

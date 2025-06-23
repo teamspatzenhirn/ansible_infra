@@ -25,7 +25,7 @@ pc_werkstatt:
     netbird_mgmt_url: https://vpn.spatz.wtf
     netbird_setup_key: "{{ lookup('file', '../netbird_setup.key') }}"
     mount_hostname: pc00.spatz.vpn
-    mount_extra_args: x-systemd.requires=sys-devices-virtual-net-wt0.device
+    mount_via_netbird: true
   hosts:
     pc10:
     pc11:

@@ -1,0 +1,14 @@
+[Unit]
+Description=Wait for DNS+network to be up
+{% if mount_via_netbird %}
+Requires=netbird.service
+After=netbird.service
+{% endif %}
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/systemd/system/wait-for-nfs.sh %i
+
+[Install]
+WantedBy=multi-user.target
