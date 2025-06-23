@@ -1,0 +1,2 @@
+mount_hostname: sven.spatz.wtf
+mount_extra_args: _netdev

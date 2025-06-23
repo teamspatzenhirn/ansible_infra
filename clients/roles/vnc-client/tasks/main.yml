@@ -1,0 +1,4 @@
+- name: "install tigervnc-viewer"
+  become: true
+  apt:
+    name: tigervnc-viewer

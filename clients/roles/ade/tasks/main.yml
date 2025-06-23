@@ -1,0 +1,8 @@
+- name: "fetch binary"
+  become: true
+  get_url:
+    url: https://gitlab.com/ApexAI/ade-cli/-/jobs/7662292263/artifacts/raw/dist/ade+x86_64
+    dest: /usr/local/bin/ade
+    owner: root
+    group: root
+    mode: 0755

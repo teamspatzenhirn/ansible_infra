@@ -1,0 +1,17 @@
+- name: "password sudo for users"
+  become: true
+  copy:
+    src: 10_sudo_users
+    dest: /etc/sudoers.d/10_sudo_users
+    owner: root
+    group: root
+    mode: 0440
+
+- name: "nopassword sudo for spatz"
+  become: true
+  copy:
+    src: 20_sudo_spatz
+    dest: /etc/sudoers.d/20_sudo_spatz
+    owner: root
+    group: root
+    mode: 0440

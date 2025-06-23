@@ -14,9 +14,12 @@
     - dominion_solutions.netbird.netbird
 
 - name: PCs
-  hosts: pc
+  hosts:
+    - pc
+    - pc_werkstatt
   tags:
     - pc
+    - pc_werkstatt
   roles:
     - remove-legacy-stuff
     - kanidm
@@ -24,9 +27,17 @@
     - kill-snap-get-flatpak
     - desktop-programs
     - shells
-    - pulseaudio
     - nvidia
     - nvidia-docker
+    - vnc-client
+    - ade
+    - sudo
+
+- name: Teamraum Audio
+  hosts: pc
+  tags: pc
+  roles:
+    - pulseaudio
 
 - name: CI
   hosts: ci
