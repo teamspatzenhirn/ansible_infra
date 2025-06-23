@@ -8,7 +8,7 @@
 | Tastaturlayout | **Deutsch** |
 | Netzwerkverbindung | **Nein** (_nach Installation konfigurieren_) |
 | Appselektion | **Default** |
-| 3rd Party | **Ja** |
+| 3rd Party | **Nein** |
 | Zeitzone | **`Europe/Berlin`** |
 | **_INSTALL & REBOOT_** | - |
 | Ubuntu Pro | **Nein** |
@@ -28,5 +28,5 @@ sudo apt install curl -y
 curl -fsSL https://raw.githubusercontent.com/teamspatzenhirn/ansible_infra/refs/heads/main/init.sh | sudo bash
 ```
 
-Gegen Ende fragt das Skript nach einem "Mantra". Damit ist der Schlüssel zum Entschlüsseln des NetBird Setupkeys aus diesem Repository gemeint.\
+Gegen Ende fragt das Skript nach einer "Passphrase". Damit ist der Schlüssel zum Entschlüsseln des NetBird Setupkeys aus diesem Repository gemeint.\
 Dieser Schlüssel ist an entsprechender Stelle zu "_finden_".
