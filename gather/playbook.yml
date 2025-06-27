@@ -1,6 +1,6 @@
 ---
 - name: Gather PC specific facts
-  hosts: pc
+  hosts: all
   gather_facts: yes
 
   roles:

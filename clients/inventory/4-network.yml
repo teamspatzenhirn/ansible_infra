@@ -1,0 +1,6 @@
+global_ip:
+  pc[05:08]:
+
+netbird:
+  pc[10:11]:
+  pc[15:16]:

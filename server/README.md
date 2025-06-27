@@ -27,3 +27,9 @@ Im Server befinden sich folgende Festplatten:
 
 > [!CAUTION]
 > Auf der Systemfestplatte selbst dürfen keinerlei Daten gespeichert werden, welche nicht durch eine Neuinstallation und Ausführung des Playbooks wiederhergestellt werden können!
+
+
+## Ansible Command
+```bash
+ansible-playbook playbook.yml 
+```

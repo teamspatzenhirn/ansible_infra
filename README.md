@@ -37,10 +37,10 @@ ansible-galaxy collection install -f community.general community.docker dominion
 
 Anschließend kann dann das entsprechende Playbook ausgeführt werden (zuerst in den entsprechenden Ordner wechseln):
 ```bash
-ansible-playbook playbook.yml -i inventory.yml
+ansible-playbook playbook.yml 
 ```
 
-Mehr zu den Playbooks ist entsprechend der READMEs in [`clients`](clients/) bzw [`server`](server/) zu entnehmen.
+Mehr zu den Playbooks ist entsprechend der READMEs in [`gather`](gather/), [`clients`](clients/) bzw. [`server`](server/) zu entnehmen.
 
 ## Utilities
 

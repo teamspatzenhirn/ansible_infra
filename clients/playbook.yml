@@ -1,7 +1,6 @@
 - name: Common
   hosts:
-    - pc
-    - ci
+    - clients
   tags:
     - pc
     - ci
@@ -16,7 +15,6 @@
 - name: PCs
   hosts:
     - pc
-    - pc_werkstatt
   tags:
     - pc
     - pc_werkstatt
@@ -34,7 +32,7 @@
     - sudo
 
 - name: Teamraum Audio
-  hosts: pc
+  hosts: teamraum
   tags: pc
   roles:
     - pulseaudio

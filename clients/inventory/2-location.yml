@@ -1,0 +1,8 @@
+teamraum:
+  hosts:
+    pc[05:08]:
+
+werkstatt:
+  hosts:
+    pc[10:11]:
+    pc[15:16]:
