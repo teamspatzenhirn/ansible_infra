@@ -17,6 +17,7 @@
   loop: "{{ results.results }}"
   loop_control:
     label: "{{ item.cmd }}"
+  when: item is succeeded
 
 - name: dump command outputs
   ansible.builtin.template: 
@@ -27,3 +28,4 @@
   loop_control:
     label: "{{ item.cmd }}"
   changed_when: true
+  when: item is succeeded
