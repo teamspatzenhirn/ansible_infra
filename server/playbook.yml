@@ -9,3 +9,4 @@
     - pulseaudio
     - kanidm-client
     - dominion_solutions.netbird.netbird
+    - ufw
