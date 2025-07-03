@@ -1,0 +1,11 @@
+### RULES ###
+
+### tuple ### limit tcp 2244 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2244 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 2244 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 2244 -j ufw-user-limit-accept
+
+### tuple ### allow tcp 5900:5910 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp -m multiport --dports 5900:5910 -j ACCEPT
+
+### END RULES ###

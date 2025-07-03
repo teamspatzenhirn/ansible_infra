@@ -1,0 +1,25 @@
+- name: "install via apt"
+  become: true
+  ansible.builtin.apt:
+    name: ufw
+    state: latest
+
+- name: "enable and deny all incoming"
+  become: true
+  community.general.ufw:
+    state: enabled
+    policy: deny
+
+- name: "install user.rules"
+  become: true
+  replace:
+    path: /etc/ufw/user.rules
+    regexp: '### RULES ###[\s\S]*### END RULES ###'
+    replace: "{{ lookup('file', 'user.rules') }}"
+
+- name: "install user6.rules"
+  become: true
+  replace:
+    path: /etc/ufw/user6.rules
+    regexp: '### RULES ###[\s\S]*### END RULES ###'
+    replace: "{{ lookup('file', 'user6.rules') }}"
