@@ -24,9 +24,9 @@
   become: true
   shell:
     cmd: nvidia-ctk runtime configure --runtime=docker
-  when: install.changed
+  when: install.changed or force_all
 
 - name: "restart docker"
   become: true
   shell: systemctl restart docker
-  when: install.changed
+  when: install.changed or force_all

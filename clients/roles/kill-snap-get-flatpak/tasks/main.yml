@@ -75,4 +75,4 @@
   become: true
   apt:
     update_cache: yes
-  when: nosnap.changed
+  when: nosnap.changed or force_all

@@ -30,4 +30,4 @@
   become: true
   community.general.ufw:
     state: reloaded
-  when: user_rules.changed or user6_rules.changed
+  when: user_rules.changed or user6_rules.changed or force_all

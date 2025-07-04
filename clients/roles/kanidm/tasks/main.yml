@@ -68,7 +68,7 @@
   systemd_service:
     name: kanidm-unixd
     state: restarted
-  when: configs.changed
+  when: configs.changed or force_all
 
 - name: "restart unixd-tasks service"
   become: true
@@ -76,7 +76,7 @@
     name: kanidm-unixd-tasks
     daemon_reload: true
     state: restarted
-  when: modify.changed or configs.changed
+  when: modify.changed or configs.changed or force_all
 
 - name: "update nsswitch.conf"
   become: true
@@ -110,4 +110,4 @@
   systemd_service:
     name: sshd
     state: reloaded
-  when: sshd_conf.changed
+  when: sshd_conf.changed or force_all

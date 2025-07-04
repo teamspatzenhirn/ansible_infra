@@ -12,49 +12,6 @@
     - /opt/aufnahmen
     - /opt/sim_tracks
 
-- name: "remove fstab NFS homes at /u"
-  become: true
-  lineinfile:
-    path: /etc/fstab
-    regexp: '^(eric|sven|pc00).spatz.(wtf|vpn):/(home|mnt/user\-home) '
-    state: absent
-  register: homes
-
-- name: "remove fstab NFS skel at /opt/skel"
-  become: true
-  lineinfile:
-    path: /etc/fstab
-    regexp: "^(sven|pc00).spatz.(wtf|vpn):/mnt/auxiliary/skel "
-    state: absent
-  register: skel
-
-- name: "remove fstab NFS aufnahmen at /opt/aufnahmen"
-  become: true
-  lineinfile:
-    path: /etc/fstab
-    regexp: "^(eric|sven|pc00).spatz.(wtf|vpn):/(opt|mnt)/aufnahmen "
-    state: absent
-  register: aufnahmen
-
-- name: "remove fstab NFS sim_tracks at /opt/sim_tracks"
-  become: true
-  lineinfile:
-    path: /etc/fstab
-    regexp: "^(sven|pc00).spatz.(wtf|vpn):/mnt/auxiliary/sim_tracks "
-    state: absent
-  register: sim_tracks
-
-- name: "remove old and failed spatz mount hacky hack"
-  become: true
-  lineinfile:
-    path: /etc/fstab
-    state: absent
-    regexp: "{{ item }}"
-  with_items:
-    - "^/ /mnt/localroot "
-    - "^/mnt/localroot/home/spatz "
-  register: old
-
 - name: "copy script"
   become: true
   copy:
@@ -84,12 +41,7 @@
 - name: "daemon reload"
   become: true
   shell: systemctl daemon-reload
-  when: homes.changed or skel.changed or aufnahmen.changed or sim_tracks.changed or old.changed
-
-- name: "mount all"
-  become: true
-  command: /bin/mount -a
-  when: homes.changed or skel.changed or aufnahmen.changed or sim_tracks.changed or old.changed
+  when: copy.changed or template.changed or force_all
 
 - name: "enable / reload mounts"
   become: true
@@ -103,4 +55,4 @@
     - opt-sim_tracks.mount
     - opt-skel.mount
     - u.mount
-  when: copy.changed or template.changed
+  when: copy.changed or template.changed or force_all

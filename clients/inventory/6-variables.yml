@@ -6,6 +6,7 @@ all:
     netbird_register: true
     netbird_mgmt_url: https://vpn.spatz.wtf
     netbird_setup_key: "{{ lookup('file', '../netbird_setup.key') }}"
+    force_all: false # if true => must be run as local spatz user! requires all other users being logged out!
 
 global_ip:
   vars:
