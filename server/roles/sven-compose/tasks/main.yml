@@ -11,4 +11,4 @@
   community.docker.docker_compose_v2:
     project_src: /home/ansible/sven
     remove_orphans: true
-  when: copy.changed
+  when: copy.changed or force_all

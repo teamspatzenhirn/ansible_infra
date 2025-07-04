@@ -6,6 +6,7 @@ server:
     netbird_register: true
     netbird_mgmt_url: https://vpn.spatz.wtf
     netbird_setup_key: "{{ lookup('file', '../netbird_setup.key') }}"
+    force_all: false
   hosts:
     sven:
       ansible_host: sven.spatz.wtf

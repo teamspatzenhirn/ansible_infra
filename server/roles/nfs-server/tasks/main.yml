@@ -52,4 +52,4 @@
 - name: "reload NFS & exportfs"
   become: true
   shell: systemctl reload nfs-kernel-server && exportfs -a
-  when: generate.changed or config.changed
+  when: generate.changed or config.changed or force_all

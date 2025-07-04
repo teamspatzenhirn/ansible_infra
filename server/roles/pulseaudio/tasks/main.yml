@@ -31,4 +31,4 @@
     name: pulseaudio
     enabled: true
     state: restarted
-  when: service.changed or config.changed
+  when: service.changed or config.changed or force_all
