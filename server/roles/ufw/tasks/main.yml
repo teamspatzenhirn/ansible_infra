@@ -16,6 +16,7 @@
     path: /etc/ufw/user.rules
     regexp: '### RULES ###[\s\S]*### END RULES ###'
     replace: "{{ lookup('file', 'user.rules') }}"
+  register: user_rules
 
 - name: "install user6.rules"
   become: true
@@ -23,3 +24,10 @@
     path: /etc/ufw/user6.rules
     regexp: '### RULES ###[\s\S]*### END RULES ###'
     replace: "{{ lookup('file', 'user6.rules') }}"
+  register: user6_rules
+
+- name: "reload if changed"
+  become: true
+  community.general.ufw:
+    state: reloaded
+  when: user_rules.changed or user6_rules.changed
