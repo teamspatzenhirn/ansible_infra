@@ -1,0 +1,25 @@
+- name: check for netbird installation
+  shell:
+    cmd: netbird version
+  failed_when: false
+  changed_when: false
+  register: netbird_installed
+
+- name: install netbird
+  ansible.builtin.shell: curl -fsSL https://pkgs.netbird.io/install.sh | sh
+  when: netbird_installed.rc != 0 or force_all
+
+- name: check if already registered
+  shell:
+    cmd: 'netbird status -d --filter-by-names {{ ansible_hostname }} | grep "{{ netbird_mgmt_url }}"'
+  register: netbird_status
+  failed_when: false
+  changed_when: false
+  when: netbird_register is true
+
+- name: start and register netbird
+  become: true
+  shell: netbird up --setup-key="{{ netbird_setup_key }}" --management-url="{{ netbird_mgmt_url }}"
+  when: 
+    - netbird_register is true
+    - "'NeedsLogin' in netbird_status.stdout or 'LoginFailed' in netbird_status.stdout or netbird_status.rc != 0 or force_all"

@@ -10,7 +10,7 @@
     - docker
     - ansible-user
     - spatz-user
-    - dominion_solutions.netbird.netbird
+    - netbird
     - ufw
 
 - name: PCs
