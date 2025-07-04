@@ -31,6 +31,7 @@
     - vnc-client
     - ade
     - sudo
+    - vscode
 
 - name: Teamraum Audio
   hosts: teamraum
