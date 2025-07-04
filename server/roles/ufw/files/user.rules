@@ -36,4 +36,15 @@
 -A ufw-user-input -p tcp --dport 2049 -s 100.64.0.0/10 -j ACCEPT
 -A ufw-user-input -p udp --dport 2049 -s 100.64.0.0/10 -j ACCEPT
 
+### tuple ### allow any 3478 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 3478 -j ACCEPT
+-A ufw-user-input -p udp --dport 3478 -j ACCEPT
+
+### tuple ### allow any 5349 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 5349 -j ACCEPT
+-A ufw-user-input -p udp --dport 5349 -j ACCEPT
+
+### tuple ### allow udp 49152:65535 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 49152:65535 -j ACCEPT
+
 ### END RULES ###

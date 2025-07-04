@@ -24,4 +24,15 @@
 -A ufw6-user-input -p udp --dport 2244 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw6-user-limit
 -A ufw6-user-input -p udp --dport 2244 -j ufw6-user-limit-accept
 
+### tuple ### allow any 3478 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 3478 -j ACCEPT
+-A ufw6-user-input -p udp --dport 3478 -j ACCEPT
+
+### tuple ### allow any 5349 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 5349 -j ACCEPT
+-A ufw6-user-input -p udp --dport 5349 -j ACCEPT
+
+### tuple ### allow udp 49152:65535 ::/0 any ::/0 in
+-A ufw6-user-input -p udp -m multiport --dports 49152:65535 -j ACCEPT
+
 ### END RULES ###
