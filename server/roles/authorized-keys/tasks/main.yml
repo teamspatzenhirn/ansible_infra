@@ -1,0 +1,19 @@
+- name: "set authorized keys"
+  become: true
+  ansible.posix.authorized_key:
+    user: djtrumpadmin
+    key: "{{ lookup('file', 'authorized_keys') + '\n' + lookup('url', 'https://raw.githubusercontent.com/teamspatzenhirn/ansible_infra/refs/heads/main/ansible_key.pub', split_lines=False) }}"
+    state: present
+    exclusive: true
+
+- name: "disable password login per ssh"
+  become: true
+  copy:
+    dest: "/etc/ssh/sshd_config.d/disablePasswordAuth.conf"
+    content: "PasswordAuthentication no"
+  register: disable
+
+- name: "restart sshd"
+  become: true
+  shell: systemctl restart sshd
+  when: disable.changed or force_all
