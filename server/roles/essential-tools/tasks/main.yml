@@ -14,3 +14,5 @@
       - ncdu
       - git
       - mcrypt
+      - vim
+      - nmap
