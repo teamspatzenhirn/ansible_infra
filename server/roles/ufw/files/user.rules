@@ -47,4 +47,8 @@
 ### tuple ### allow udp 49152:65535 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 49152:65535 -j ACCEPT
 
+### tuple ### allow any 9102 0.0.0.0/0 any 134.60.112.128/27 in
+-A ufw-user-input -p tcp --dport 9102 -s 134.60.112.128/27 -j ACCEPT
+-A ufw-user-input -p udp --dport 9102 -s 134.60.112.128/27 -j ACCEPT
+
 ### END RULES ###

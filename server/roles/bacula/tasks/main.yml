@@ -1,0 +1,28 @@
+- name: "install bacula file daemon"
+  become: true
+  apt:
+    name:
+      - bacula-fd
+    state: latest
+    update_cache: yes
+
+- name: create working directory
+  become: true
+  file:
+    path: /opt/bacula/working
+    state: directory
+
+- name: "copy config"
+  become: true
+  copy:
+    src: bacula-fd.conf
+    dest: /etc/bacula/bacula-fd.conf
+    owner: root
+    group: root
+    mode: 0644
+  register: config
+
+- name: "restart bacula-fd"
+  become: true
+  shell: systemctl restart bacula-fd
+  when: config.changed or force_all

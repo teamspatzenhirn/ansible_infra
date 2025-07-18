@@ -1,0 +1,1 @@
+bacula-fd.conf filter=crypt diff=crypt merge=crypt
