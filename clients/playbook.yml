@@ -26,8 +26,6 @@
     - kill-snap-get-flatpak
     - desktop-programs
     - shells
-    - nvidia
-    - nvidia-docker
     - vnc-client
     - ade
     - sudo

@@ -19,7 +19,7 @@
   become: true
   apt:
     name:
-      - nvidia-driver-565
+      - nvidia-driver-570
       - nvidia-opencl-dev
     state: latest
     update_cache: yes

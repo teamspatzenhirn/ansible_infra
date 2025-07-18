@@ -1,3 +1,12 @@
+- name: "create /u directory"
+  become: true
+  file:
+    mode: 0755
+    owner: root
+    group: root
+    path: /u
+    state: directory
+
 - name: "ensure local group users does not exist"
   become: true
   group:
