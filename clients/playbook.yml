@@ -31,6 +31,7 @@
     - sudo
     - vscode
     - vnc-server
+    - virtualgl
 
 - name: Teamraum Audio
   hosts: teamraum

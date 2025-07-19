@@ -1,0 +1,14 @@
+---
+- name: "install VirtualGL"
+  become: true
+  apt:
+    deb: https://github.com/VirtualGL/virtualgl/releases/download/3.1.1/virtualgl_3.1.1_amd64.deb
+
+- name: "install profile.d script to set VGL_DISPLAY to egl"
+  become: true
+  copy:
+    src: vgl_display.sh
+    dest: /etc/profile.d/vgl_display.sh
+    owner: root
+    group: root
+    mode: 0644
