@@ -1,0 +1,12 @@
+[Unit]
+Description=spatz vnc server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/vncserver -nolock -fg -localhost no
+WorkingDirectory=/spatz/
+User=spatz
+
+[Install]
+WantedBy=default.target

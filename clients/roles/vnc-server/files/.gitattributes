@@ -1,0 +1,1 @@
+vncpasswd filter=crypt diff=crypt merge=crypt

@@ -1,0 +1,51 @@
+- name: "install vnc server requirements"
+  become: true
+  apt:
+    name:
+      - tigervnc-scraping-server
+      - tigervnc-standalone-server
+      - xfce4
+      - xfce4-goodies
+      - xfce4-whiskermenu-plugin
+      - dbus-x11
+
+- name: "check if vnc passwd exists"
+  become: true
+  stat:
+    path: /spatz/.vnc/passwd
+  register: pw
+
+- name: "set vnc password"
+  become: true
+  become_user: spatz
+  when: pw.stat.exists == False
+  expect:
+    command: vncpasswd
+    responses:
+      Password: "{{ lookup('file', 'vncpasswd') }}"
+      Verify: "{{ lookup('file', 'vncpasswd') }}"
+      view-only: "n"
+
+- name: "copy xstartup for vnc"
+  become: true
+  copy:
+    src: xstartup
+    dest: /etc/X11/Xtigervnc-session
+    mode: 0755
+    owner: root
+    group: root
+
+- name: "copy vnc systemd service"
+  become: true
+  copy:
+    src: spatz-vnc.service
+    dest: /etc/systemd/system/spatz-vnc.service
+  register: service
+
+- name: "enable/disable spatz vnc autostart"
+  become: true
+  systemd_service:
+    state: "{{ 'stopped' if not vnc_autostart else 'restarted' if service.changed else 'started' }}"
+    name: spatz-vnc
+    daemon_reload: true
+    enabled: "{{ 'true' if vnc_autostart else 'false' }}"
