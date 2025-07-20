@@ -4,3 +4,4 @@
     upgrade: yes
     update_cache: yes
     autoremove: yes
+    allow_downgrade: true
