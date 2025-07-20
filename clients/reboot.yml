@@ -1,0 +1,6 @@
+- name: Reboot
+  hosts:
+    - clients
+  tasks:
+    - reboot:
+      become: true
