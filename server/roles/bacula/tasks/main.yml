@@ -1,10 +1,20 @@
-- name: "install bacula file daemon"
+- name: "install bacula file daemon and bconsole"
   become: true
   apt:
     name:
       - bacula-fd
+      - bacula-console
     state: latest
     update_cache: yes
+
+- name: "copy bconsole config"
+  become: true
+  copy:
+    src: bconsole.conf
+    dest: /etc/bacula/bconsole.conf
+    owner: root
+    group: root
+    mode: 0644
 
 - name: create working directory
   become: true
@@ -12,7 +22,7 @@
     path: /opt/bacula/working
     state: directory
 
-- name: "copy config"
+- name: "copy fd config"
   become: true
   copy:
     src: bacula-fd.conf
