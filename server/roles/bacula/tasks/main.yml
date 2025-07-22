@@ -26,3 +26,9 @@
   become: true
   shell: systemctl restart bacula-fd
   when: config.changed or force_all
+
+- name: "remove previous logs"
+  become: true
+  ansible.builtin.file:
+    path: /var/log/bacula/bacula-fd.log
+    state: absent
