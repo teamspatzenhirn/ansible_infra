@@ -6,3 +6,7 @@ werkstatt:
   hosts:
     pc[10:11]:
     pc[15:16]:
+
+reserve:
+  hosts:
+    pc20:

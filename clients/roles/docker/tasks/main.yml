@@ -54,3 +54,10 @@
     local: true
     gid: 800
     state: present
+
+- name: "add spatz to docker group"
+  become: true
+  user:
+    name: spatz
+    groups: docker
+    append: yes

@@ -1,0 +1,71 @@
+- name: 'create .ssh dir'
+  become: true
+  file:
+    path: /spatz/.ssh
+    owner: spatz
+    state: directory
+
+- name: 'copy SSH private key'
+  become: true
+  copy:
+    src: spatz
+    dest: /spatz/.ssh/id_rsa
+    mode: 0600
+    owner: spatz
+
+- name: 'copy SSH public key'
+  become: true
+  copy:
+    src: spatz.pub
+    dest: /spatz/.ssh/id_rsa.pub
+    owner: spatz
+
+- name: "docker login"
+  become: true
+  become_user: spatz
+  community.docker.docker_login:
+    username: spatz
+    password: "{{ lookup('file', 'gitlab-token') }}"
+    registry_url: git.spatz.wtf:5050
+
+- name: "configure git user.name for spatz"
+  become: true
+  become_user: spatz
+  community.general.git_config:
+    name: user.name
+    value: "spatz"
+    scope: global
+
+- name: "configure git user.email for spatz"
+  become: true
+  become_user: spatz
+  community.general.git_config:
+    name: user.email
+    value: "team-spatzenhirn@uni-ulm.de"
+    scope: global
+
+- name: "create ade-home directory"
+  become: true
+  become_user: spatz
+  file:
+    path: /spatz/ade-home
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+
+- name: "create .adehome"
+  become: true
+  become_user: spatz
+  copy:
+    content: ""
+    dest: /spatz/ade-home/.adehome
+    mode: u=rwx,g=rx,o=rx
+
+- name: "clone 2021 git repo"
+  become: true
+  become_user: spatz
+  git:
+    repo: "git@git.spatz.wtf:spatzenhirn/2021.git"
+    dest: /spatz/ade-home/2021
+    accept_newhostkey: true
+    version: develop
+    update: no

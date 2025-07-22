@@ -1,9 +1,6 @@
 - name: Common
   hosts:
     - clients
-  tags:
-    - pc
-    - ci
   roles:
     - update
     - essential-tools
@@ -16,9 +13,6 @@
 - name: PCs
   hosts:
     - pc
-  tags:
-    - pc
-    - pc_werkstatt
   roles:
     - remove-legacy-stuff
     - kanidm
@@ -35,21 +29,28 @@
 
 - name: Teamraum Audio
   hosts: teamraum
-  tags: pc
   roles:
     - pulseaudio
 
 - name: CI
   hosts: ci
-  tags:
-    - ci
   roles:
     - gitlab-runner
 
 - name: GPU
   hosts: gpu
-  tags:
-    - gpu
   roles:
     - nvidia
     - nvidia-docker
+
+- name: NUC
+  hosts: nuc
+  roles:
+    - kill-snap-get-flatpak
+    - shells
+    - vnc-client
+    - ade
+    - sudo
+    - vnc-server
+    - virtualgl
+    - spatz-setup

@@ -1,0 +1,2 @@
+spatz  filter=crypt diff=crypt merge=crypt
+gitlab-token  filter=crypt diff=crypt merge=crypt

@@ -7,3 +7,7 @@ ci:
   hosts:
     pc[10:11]:
     pc[15:16]:
+
+nuc:
+  hosts:
+    pc20:
