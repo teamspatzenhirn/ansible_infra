@@ -1,0 +1,49 @@
+- name: "check if background exists for host"
+  ansible.builtin.stat:
+    path: "{{role_path}}/backgrounds/{{inventory_hostname}}.png"
+  delegate_to: localhost
+  register: has_background
+
+- name: "copy background image"
+  become: true
+  copy:
+    src: "{{role_path}}/backgrounds/{{inventory_hostname}}.png"
+    dest: /spatz/background.png
+    owner: spatz
+  when: has_background.stat.exists
+  register: background
+
+- name: "get tmp dbus sessions (for vnc+xfce4)"
+  find:
+    paths: /tmp
+    patterns: "dbus-*"
+    file_type: any
+    recurse: no
+  register: dbus
+  when: background.changed or (has_background.stat.exists and force_all)
+  
+- name: "install xfce background"
+  become: true
+  become_user: spatz
+  shell:
+    cmd: |
+      export DBUS_SESSION_BUS_ADDRESS=unix:path={{item.path}}
+      xfconf-query --channel xfce4-desktop --list | grep last-image | xargs -r xfconf-query -c xfce4-desktop -s /spatz/background.png -p 
+    executable: /bin/bash
+  with_items: "{{ dbus.files|selectattr('pw_name', 'equalto', 'spatz')|list + [ {'path': '/run/user/$UID/bus'} ] }}"
+  loop_control:
+    label: "{{ item.path }}"
+  when: background.changed or (has_background.stat.exists and force_all)
+
+- name: "install gnome background"
+  become: true
+  become_user: spatz
+  shell: 
+    cmd: |
+      export DBUS_SESSION_BUS_ADDRESS=unix:path={{item.path}}
+      gsettings set org.gnome.desktop.background picture-uri file:///spatz/background.png
+    executable: /bin/bash
+  with_items: "{{ dbus.files|selectattr('pw_name', 'equalto', 'spatz')|list + [ {'path': '/run/user/$UID/bus'} ] }}"
+  loop_control:
+    label: "{{ item.path }}"
+  when: background.changed or (has_background.stat.exists and force_all)
