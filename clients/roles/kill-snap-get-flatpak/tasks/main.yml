@@ -50,6 +50,7 @@
     state: absent
     purge: true
     allow_downgrade: true
+    force: yes
 
 # clean up of ~/snap shall be done manually
 - name: "clean up snap folders"
