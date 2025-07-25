@@ -1,24 +1,31 @@
-- name: 'create .ssh dir'
+- name: "create .ssh dir"
   become: true
   file:
     path: /spatz/.ssh
     owner: spatz
     state: directory
 
-- name: 'copy SSH private key'
+- name: "copy SSH private key"
   become: true
   copy:
     src: spatz
     dest: /spatz/.ssh/id_rsa
     mode: 0600
     owner: spatz
+  register: key
 
-- name: 'copy SSH public key'
+- name: "copy SSH public key"
   become: true
   copy:
     src: spatz.pub
     dest: /spatz/.ssh/id_rsa.pub
     owner: spatz
+
+# mostly this ensures that docker group membership is re-evaluated before docker login
+- name: "reboot if initial setup"
+  become: true
+  reboot:
+  when: key.changed or force_all
 
 - name: "docker login"
   become: true
