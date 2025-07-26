@@ -21,7 +21,10 @@
     dest: /spatz/.ssh/id_rsa.pub
     owner: spatz
 
-# mostly this ensures that docker group membership is re-evaluated before docker login
+# mostly this ensures that docker 
+# group membership is re-evaluated 
+# before docker login
+# and that the coral works
 - name: "reboot if initial setup"
   become: true
   reboot:
