@@ -53,4 +53,5 @@
     - sudo
     - vnc-server
     - virtualgl
+    - spatz-background
     - spatz-setup
