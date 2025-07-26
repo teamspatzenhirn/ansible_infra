@@ -1,0 +1,22 @@
+- name: "download gasket-driver deb"
+  become: true
+  ansible.builtin.get_url:
+    url: https://static.spatz.wtf/deps/coral/gasket-dkms_1.0-18_all.deb
+    dest: /opt/
+    username: deps
+    password: "{{ lookup('file', 'deps-pw') }}"
+  
+- name: "install gasket-dkms driver for pci coral"
+  become: true
+  apt:
+    deb: /opt/gasket-dkms_1.0-18_all.deb
+    allow_downgrade: true
+
+- name: "copy coral udev rules"
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: "/lib/udev/rules.d/{{ item }}"
+  with_items:
+    - 65-apex.rules
+    - 65-edgetpu-accelerator.rules

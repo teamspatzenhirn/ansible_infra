@@ -1,0 +1,30 @@
+- name: "create coral dep directory"
+  become: true
+  ansible.builtin.file:
+    path: /mnt/auxiliary/static_files/deps/coral/
+    state: directory
+
+- name: "copy build script"
+  become: true
+  copy:
+    src: build.sh
+    dest: /mnt/auxiliary/static_files/deps/coral/build.sh
+    mode: 0755
+  register: script
+
+- name: "run docker building gasket driver"
+  community.docker.docker_container:
+    name: gasket-build
+    state: started
+    image: ubuntu:24.04
+    command: /bin/bash -c /coral/build.sh
+    detach: false
+    pull: true
+    volumes:
+      - /mnt/auxiliary/static_files/deps/coral:/coral
+  when: script.changed or force_all
+    
+- name: "cleanup container"
+  community.docker.docker_container:
+    name: gasket-build
+    state: absent
