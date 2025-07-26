@@ -1,0 +1,10 @@
+[Unit]
+Description=Setting usbfs_memory_mb
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "/bin/echo 1000 > /sys/module/usbcore/parameters/usbfs_memory_mb"
+RemainAfterExit=true
+
+[Install]
+WantedBy=default.target
