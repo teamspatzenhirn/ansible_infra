@@ -10,4 +10,4 @@ ci:
 
 nuc:
   hosts:
-    pc20:
+    pc01:

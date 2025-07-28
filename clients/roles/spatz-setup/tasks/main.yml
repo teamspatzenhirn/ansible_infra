@@ -9,14 +9,24 @@
     update: yes
   register: gnome_randr
 
+# that display rotation works...
+- name: login to spatz user and press Enter!
+  ansible.builtin.pause:
+  when: gnome_randr.changed or force_all
+
 - name: "rotate display"
   become: true
   become_user: spatz
   shell:
     cmd: |
       export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus
-      python3 /spatz/gnome-randr/gnome-randr.py --output HDMI-1 --rotate right 
+      python3 /spatz/gnome-randr/gnome-randr.py --output HDMI-1 --rotate right --persistent
     executable: /bin/bash
+  when: gnome_randr.changed or force_all
+
+# that display rotation works...
+- name: click on Keep Changes (fast!) on display and press Enter!
+  ansible.builtin.pause:
   when: gnome_randr.changed or force_all
 
 - name: "create .ssh dir"
@@ -42,6 +52,27 @@
     dest: /spatz/.ssh/id_rsa.pub
     owner: spatz
 
+- name: "disable screen lock"
+  become: true
+  become_user: spatz
+  shell:
+    cmd: |
+      export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus
+      gsettings set org.gnome.desktop.screensaver lock-enabled false
+    executable: /bin/bash
+  when: key.changed or force_all
+
+- name: "configure auto login"
+  become: true
+  lineinfile:
+    dest: /etc/gdm3/custom.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: 'AutomaticLoginEnable\s*=', line: 'AutomaticLoginEnable = True' }
+    - { regexp: 'AutomaticLogin\s*=', line: 'AutomaticLogin = spatz' }
+  when: key.changed or force_all
+   
 # mostly this ensures that docker 
 # group membership is re-evaluated 
 # before docker login
