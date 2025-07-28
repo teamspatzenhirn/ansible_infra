@@ -1,3 +1,24 @@
+# instead of xrandr because of Wayland
+- name: "clone gnome-randr"
+  become: true
+  become_user: spatz
+  git:
+    repo: "https://gitlab.com/Oschowa/gnome-randr.git"
+    dest: /spatz/gnome-randr
+    version: master
+    update: yes
+  register: gnome_randr
+
+- name: "rotate display"
+  become: true
+  become_user: spatz
+  shell:
+    cmd: |
+      export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus
+      python3 /spatz/gnome-randr/gnome-randr.py --output HDMI-1 --rotate right 
+    executable: /bin/bash
+  when: gnome_randr.changed or force_all
+
 - name: "create .ssh dir"
   become: true
   file:
