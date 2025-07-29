@@ -1,0 +1,60 @@
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    enp:
+      match:
+        name: "enp*"
+{% if static_ip is defined %}
+      addresses:
+        - 134.60.25.{{static_ip}}/24,134.60.25.1 
+      dhcp4: no
+      nameservers:
+        addresses: 
+          - 1.1.1.1
+          - 1.0.0.1
+{% else %}
+      dhcp4: yes
+{% endif %}
+      dhcp6: yes
+    
+    eno:
+      match:
+        name: "eno*"
+{% if static_ip is defined %}
+      addresses:
+        - 134.60.25.{{static_ip}}/24,134.60.25.1 
+      dhcp4: no
+      nameservers:
+        addresses: 
+          - 1.1.1.1
+          - 1.0.0.1
+{% else %}
+      dhcp4: yes
+{% endif %}
+      dhcp6: yes
+      
+    enx:
+      match:
+        name: "enx*"
+      addresses:
+        - 10.0.0.1/24,10.0.0.1 
+      dhcp4: no      
+      dhcp6: no
+
+  wifis:
+    wlo:
+      match:
+        name: "wlo*"
+      dhcp4: yes
+      dhcp6: yes
+      access-points:
+        "welcome": {}
+    
+    wlx:
+      match:
+        name: "wlx*"
+      dhcp4: yes
+      dhcp6: yes
+      access-points:
+        "welcome": {}

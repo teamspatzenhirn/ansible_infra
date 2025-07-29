@@ -1,0 +1,22 @@
+- name: "find existing files from NetworkManager"
+  become: true
+  find:
+    paths: /etc/netplan
+    patterns: "90-NM-*"
+  register: networkmanager
+
+- name: "remove existing files from NetworkManager"
+  become: true
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items: "{{ networkmanager['files'] }}"
+
+- name: "template netplan"
+  become: true
+  template:
+    src: "netplan.yaml.j2"
+    dest: /etc/netplan/99-spatzenhirn.yaml
+    owner: root
+    group: root
+    mode: '0600'

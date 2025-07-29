@@ -15,6 +15,27 @@ global_ip:
     mount_hostname: "sven.{{host_domain}}"
     mount_via_netbird: false
 
+static_ip:
+  hosts:
+    pc01:
+      static_ip: 221
+    pc02:
+      static_ip: 222    
+    pc03:
+      static_ip: 223
+    pc04:
+      static_ip: 224
+    pc05:
+      static_ip: 225
+    pc06:
+      static_ip: 226    
+    pc07:
+      static_ip: 227
+    pc08:
+      static_ip: 228
+    pc09:
+      static_ip: 229
+
 netbird:
   vars:
     host_domain: spatz.vpn
@@ -22,6 +43,6 @@ netbird:
     mount_hostname: "pc00.{{host_domain}}"
     mount_via_netbird: true
 
-reserve:
+spatz:
   vars:
     vnc_autostart: true

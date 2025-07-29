@@ -8,6 +8,7 @@
     - ansible-user
     - spatz-user
     - netbird
+    - network
     - ufw
 
 - name: PCs

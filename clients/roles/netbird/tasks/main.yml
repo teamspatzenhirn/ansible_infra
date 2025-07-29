@@ -6,7 +6,7 @@
   register: netbird_installed
 
 - name: install netbird
-  ansible.builtin.shell: curl -fsSL https://pkgs.netbird.io/install.sh | sh
+  shell: curl -fsSL https://pkgs.netbird.io/install.sh | sh
   when: netbird_installed.rc != 0 or force_all
 
 - name: check if already registered
