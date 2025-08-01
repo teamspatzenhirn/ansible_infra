@@ -7,3 +7,18 @@
       - com.discordapp.Discord
       - com.spotify.Client
     state: latest
+
+- name: install apt packages
+  become: true
+  apt:
+    state: present
+    name:
+      # LaTeX
+      - texstudio
+      - texlive-fonts-extra
+      - texlive-fonts-recommended
+      - texlive-lang-german
+      - texlive-bibtex-extra
+      - texlive-latex-extra
+      - latexmk
+      - texlive-science
