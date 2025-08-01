@@ -1,0 +1,27 @@
+<monitors version="2">
+  <configuration>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <transform>
+        <rotation>right</rotation>
+        <flipped>no</flipped>
+      </transform>
+      <monitor>
+        <monitorspec>
+          <connector>HDMI-1</connector>
+          <vendor>HLT</vendor>
+          <product>T779-108x1920</product>
+          <serial>0x88888800</serial>
+        </monitorspec>
+        <mode>
+          <width>1080</width>
+          <height>1920</height>
+          <rate>59.994</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
+</monitors>

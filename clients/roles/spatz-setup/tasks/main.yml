@@ -1,33 +1,9 @@
-# instead of xrandr because of Wayland
-- name: "clone gnome-randr"
+- name: "copy monitors.xml for rotated hdmi monitor on spatz"
   become: true
-  become_user: spatz
-  git:
-    repo: "https://gitlab.com/Oschowa/gnome-randr.git"
-    dest: /spatz/gnome-randr
-    version: master
-    update: yes
-  register: gnome_randr
-
-# that display rotation works...
-- name: login to spatz user and press Enter!
-  ansible.builtin.pause:
-  when: gnome_randr.changed or force_all
-
-- name: "rotate display"
-  become: true
-  become_user: spatz
-  shell:
-    cmd: |
-      export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus
-      python3 /spatz/gnome-randr/gnome-randr.py --output HDMI-1 --rotate right --persistent
-    executable: /bin/bash
-  when: gnome_randr.changed or force_all
-
-# that display rotation works...
-- name: click on Keep Changes (fast!) on display and press Enter!
-  ansible.builtin.pause:
-  when: gnome_randr.changed or force_all
+  copy:
+    src: monitors.xml
+    dest: /spatz/.config/monitors.xml
+    owner: spatz
 
 - name: "create .ssh dir"
   become: true
@@ -77,6 +53,7 @@
 # group membership is re-evaluated 
 # before docker login
 # and that the coral works
+# and that display is rotated
 - name: "reboot if initial setup"
   become: true
   reboot:
