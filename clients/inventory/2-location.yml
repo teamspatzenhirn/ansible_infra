@@ -10,6 +10,7 @@ werkstatt:
 spatz:
   hosts:
     pc01:
+    pc21:
 
 reserve:
   hosts:

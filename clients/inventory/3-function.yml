@@ -11,3 +11,4 @@ ci:
 nuc:
   hosts:
     pc01:
+    pc21:
