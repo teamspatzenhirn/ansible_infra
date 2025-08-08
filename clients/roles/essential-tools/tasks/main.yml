@@ -36,6 +36,7 @@
       - make
       - ninja-build
       - git
+      - git-lfs
       - mcrypt
       - meld
       - x11vnc
