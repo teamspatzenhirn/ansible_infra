@@ -1,0 +1,12 @@
+- name: "remove potential ubuntu user"
+  become: true
+  user:
+    name: ubuntu
+    state: absent
+    remove: true
+
+- name: "create"
+  become: true
+  user:
+    name: djtrumpadmin
+    shell: /bin/bash

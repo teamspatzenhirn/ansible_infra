@@ -10,3 +10,5 @@ server:
   hosts:
     sven:
       ansible_host: sven.spatz.wtf
+    garry:
+      ansible_host: garry.spatz.wtf

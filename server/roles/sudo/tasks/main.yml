@@ -1,0 +1,8 @@
+- name: "nopassword sudo for admin user"
+  become: true
+  copy:
+    src: 10_sudo_admin
+    dest: /etc/sudoers.d/10_sudo_admin
+    owner: root
+    group: root
+    mode: 0440

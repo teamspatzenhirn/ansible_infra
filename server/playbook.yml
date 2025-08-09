@@ -1,15 +1,26 @@
-- name: Infra
+- name: Common
   hosts: server
   roles:
     - update
     - essential-tools
-    - nfs-server
+    - admin-user
+    - sudo
+    - authorized-keys
     - docker
-    - sven-compose
+    - netbird
+
+- name: Infra
+  hosts: sven
+  roles:
+    - nfs-server
+    - compose-sven
     - pulseaudio
     - kanidm-client
-    - netbird
     - ufw
     - bacula
-    - authorized-keys
     - gasket-build
+
+- name: GitLab
+  hosts: garry
+  roles:
+    - compose-garry

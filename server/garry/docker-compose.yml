@@ -1,0 +1,36 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:18.2.1-ce.0
+    container_name: gitlab
+    restart: always
+    hostname: git.spatz.wtf
+    stop_grace_period: 45s
+    ports:
+      - "80:80"
+      - "443:443"
+      - "22:22"
+      - "5050:5050"
+    volumes:
+      - config:/etc/gitlab
+      - logs:/var/log/gitlab
+      - data:/var/opt/gitlab
+
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "/mnt/gitlab-data/config"
+  logs:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "/mnt/gitlab-data/logs"
+  data:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "/mnt/gitlab-data/data"

@@ -1,0 +1,14 @@
+- name: "copy to ansible user home"
+  copy:
+    src: garry
+    dest: /home/ansible
+    owner: ansible
+    group: ansible
+  register: copy
+
+- name: "docker compose up"
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /home/ansible/garry
+    remove_orphans: true
+  when: copy.changed or force_all
