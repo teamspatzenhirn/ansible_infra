@@ -1,0 +1,2 @@
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{serial}=="DM023QXM", GROUP="plugdev", SYMLINK+="ttySpatzDebug", RUN+="/bin/sh -c 'echo 1 >/sys/bus/usb-serial/devices/%k/latency_timer'"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{serial}=="DM023F3W", GROUP="plugdev", SYMLINK+="ttySpatzData", RUN+="/bin/sh -c 'echo 1 >/sys/bus/usb-serial/devices/%k/latency_timer'"

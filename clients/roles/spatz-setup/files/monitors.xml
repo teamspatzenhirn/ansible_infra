@@ -24,4 +24,29 @@
       </monitor>
     </logicalmonitor>
   </configuration>
+  <configuration>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <transform>
+        <rotation>upside_down</rotation>
+        <flipped>no</flipped>
+      </transform>
+      <monitor>
+        <monitorspec>
+          <connector>DP-1</connector>
+          <vendor>ADA</vendor>
+          <product>0x0004</product>
+          <serial>0x00000001</serial>
+        </monitorspec>
+        <mode>
+          <width>800</width>
+          <height>480</height>
+          <rate>65.681</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
 </monitors>
