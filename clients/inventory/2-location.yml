@@ -9,9 +9,8 @@ werkstatt:
 
 spatz:
   hosts:
-    pc01:
-    pc21:
+    pc[01:02]:
 
 reserve:
   hosts:
-    pc20:
+    pc[20:21]:

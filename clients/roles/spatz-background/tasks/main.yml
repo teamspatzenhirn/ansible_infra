@@ -13,7 +13,7 @@
   when: has_background.stat.exists
   register: background
 
-- name: "get tmp dbus sessions (for vnc+xfce4)"
+- name: "get tmp dbus sessions"
   find:
     paths: /tmp
     patterns: "dbus-*"

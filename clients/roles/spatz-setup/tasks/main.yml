@@ -34,14 +34,26 @@
     dest: /spatz/.ssh/id_rsa.pub
     owner: spatz
 
-- name: "disable screen lock"
+- name: "get tmp dbus sessions"
+  find:
+    paths: /tmp
+    patterns: "dbus-*"
+    file_type: any
+    recurse: no
+  register: dbus
+  when: key.changed or force_all
+
+- name: "disable lock screen"
   become: true
   become_user: spatz
-  shell:
+  shell: 
     cmd: |
-      export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus
+      export DBUS_SESSION_BUS_ADDRESS=unix:path={{item.path}}
       gsettings set org.gnome.desktop.screensaver lock-enabled false
     executable: /bin/bash
+  with_items: "{{ dbus.files|selectattr('pw_name', 'equalto', 'spatz')|list + [ {'path': '/run/user/$UID/bus'} ] }}"
+  loop_control:
+    label: "{{ item.path }}"
   when: key.changed or force_all
 
 - name: "configure auto login"

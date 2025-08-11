@@ -45,7 +45,7 @@
     - nvidia-docker
 
 - name: NUC
-  hosts: nuc
+  hosts: spatz
   roles:
     - kill-snap-get-flatpak
     - shells
