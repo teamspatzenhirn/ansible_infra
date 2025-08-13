@@ -58,5 +58,6 @@
     - coral
     - flir
     - touchscreen
+    - swap
     # make sure this is last to avoid need for unnecessary many reboots in previous roles for initial setup
     - spatz-setup

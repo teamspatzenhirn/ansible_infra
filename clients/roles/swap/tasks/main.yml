@@ -1,0 +1,41 @@
+- name: "get swap state"
+  command: swapon --show=NAME,SIZE
+  register: swap
+  changed_when: false
+
+- name: "check swap state"
+  set_fact: 
+    recreate_swap: "{{ swap.stdout | regex_search('^/swap.img\\s+16G', multiline=True) is none }}"
+
+- name: "swapoff"
+  become: true
+  command: swapoff /swap.img
+  when: recreate_swap
+  failed_when: false
+
+- name: create swap file
+  become: true
+  community.general.filesize:
+    path: /swap.img
+    size: 16G
+    mode: 0600
+    owner: root
+    group: root
+  when: recreate_swap
+
+- name: "mkswap"
+  become: true
+  command: mkswap /swap.img
+  when: recreate_swap
+
+- name: "swapon"
+  become: true
+  command: swapon /swap.img
+  when: recreate_swap
+
+- name: "persist in fstab"
+  become: true
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^/swap.img'
+    line: '/swap.img	none	swap	sw	0	0'
