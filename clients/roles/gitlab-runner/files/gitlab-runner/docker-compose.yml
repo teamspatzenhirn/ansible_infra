@@ -1,6 +1,6 @@
 services:
   runner:
-    image: gitlab/gitlab-runner:alpine-v18.1.0
+    image: gitlab/gitlab-runner:alpine-v18.2.1
     container_name: gitlab-runner
     restart: always
     volumes:
