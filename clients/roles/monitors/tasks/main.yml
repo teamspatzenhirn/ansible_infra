@@ -1,0 +1,9 @@
+- name: "copy monitors.xml"
+  become: true
+  copy:
+    src: monitors.xml
+    dest: /var/lib/gdm3/.config/monitors.xml
+    owner: gdm
+    group: gdm
+    mode: 0664
+  register: copy

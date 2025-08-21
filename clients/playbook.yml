@@ -27,6 +27,7 @@
     - vscode
     - vnc-server
     - virtualgl
+    - monitors
 
 - name: Teamraum Audio
   hosts: teamraum
