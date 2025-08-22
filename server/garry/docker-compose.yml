@@ -14,6 +14,12 @@ services:
       - config:/etc/gitlab
       - logs:/var/log/gitlab
       - data:/var/opt/gitlab
+  postfix:
+    image: tozd/postfix:ubuntu-noble
+    container_name: postfix
+    restart: always
+    environment:
+      - MY_NETWORKS=0.0.0.0/0
 
 volumes:
   config:
