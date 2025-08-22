@@ -27,4 +27,4 @@
         --token "$RUNNER_TOKEN_{{ inventory_hostname }}" \
         --executor "docker" \
         --docker-image "alpine:latest"
-  when: copy.changed
+  when: copy.changed or force_all
