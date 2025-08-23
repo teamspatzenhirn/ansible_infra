@@ -19,4 +19,4 @@
     name: "gitlab-backup"
     minute: "0"
     hour: "1"
-    job: "docker exec gitlab /opt/gitlab/bin/gitlab-backup create CRON=1 SKIP=registry,artifacts"
+    job: "docker exec gitlab /opt/gitlab/bin/gitlab-backup create CRON=1 SKIP=registry,artifacts && curl -fsS -m 10 --retry 5 -o /dev/null {{ lookup('file', 'gitlab-backup.healthcheck-url') }}"

@@ -35,4 +35,11 @@
     name: "gitlab-backup"
     minute: "0"
     hour: "4"
-    job: "rsync -a --delete -e 'ssh -i /mnt/auxiliary/gitlab/ansible_key -p2244 -o StrictHostKeyChecking=no' --rsync-path='sudo rsync' ansible@garry.spatz.wtf:/mnt/gitlab-data/data/backups /mnt/auxiliary/gitlab/ && chmod -R 0777 /mnt/auxiliary/gitlab/backups"
+    job: "rsync -a --delete -e 'ssh -i /mnt/auxiliary/gitlab/ansible_key -p2244 -o StrictHostKeyChecking=no' --rsync-path='sudo rsync' ansible@garry.spatz.wtf:/mnt/gitlab-data/data/backups /mnt/auxiliary/gitlab/ && chmod -R 0777 /mnt/auxiliary/gitlab/backups && curl -fsS -m 10 --retry 5 -o /dev/null {{ lookup('file', 'backup-rsync.healthcheck-url') }}"
+
+- name: "traefik reload cron"
+  cron:
+    name: "traefik-reload"
+    minute: "0"
+    hour: "2"
+    job: "docker kill --signal=SIGHUP traefik && curl -fsS -m 10 --retry 5 -o /dev/null {{ lookup('file', 'traefik-reload.healthcheck-url') }}"

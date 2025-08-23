@@ -1,6 +1,6 @@
 services:
   certbot-spatz:
-    image: serversideup/certbot-dns-cloudflare
+    image: serversideup/certbot-dns-cloudflare:v1.3.0
     container_name: certbot-spatz
     restart: always
     # user: "${UID}:${GID}"
@@ -10,10 +10,10 @@ services:
       CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_API_TOKEN}"
       CERTBOT_EMAIL: "${CERTBOT_EMAIL}"
       CLOUDFLARE_PROPAGATION_SECONDS: 30
-      CERTBOT_DOMAINS: "spatz.wtf,ftp.spatz.wtf,static.spatz.wtf,*.sven.spatz.wtf"
+      CERTBOT_DOMAINS: "spatz.wtf,ftp.spatz.wtf,static.spatz.wtf,*.sven.spatz.wtf,hc.spatz.wtf"
 
   certbot-idm:
-    image: serversideup/certbot-dns-cloudflare
+    image: serversideup/certbot-dns-cloudflare:v1.3.0
     container_name: certbot-idm
     restart: always
     # user: "${UID}:${GID}"
@@ -26,7 +26,7 @@ services:
       CERTBOT_DOMAINS: "idm.spatz.wtf"
 
   certbot-vpn:
-    image: serversideup/certbot-dns-cloudflare
+    image: serversideup/certbot-dns-cloudflare:v1.3.0
     container_name: certbot-vpn
     restart: always
     # user: "${UID}:${GID}"
@@ -239,6 +239,53 @@ services:
         max-size: "500m"
         max-file: "2"
 
+  ####################
+  #   Healthchecks   #
+  ####################
+
+  healthchecks_db:
+    image: postgres:16
+    container_name: healthchecks_db
+    restart: always
+    volumes:
+      - healthcheck_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: hc
+      POSTGRES_PASSWORD: $HC_DBPASS
+
+  healthchecks_postfix:
+    image: tozd/postfix:ubuntu-noble
+    container_name: healthchecks_postfix
+    restart: always
+    environment:
+      - MY_NETWORKS=0.0.0.0/0
+
+  healthchecks:
+    image: healthchecks/healthchecks:v3.10
+    container_name: healthchecks
+    restart: always
+    env_file:
+      - healthchecks.env
+    environment:
+      SECRET_KEY: $HC_SECRETKEY
+      DB_HOST: healthchecks_db
+      DB_NAME: hc
+      DB_PASSWORD: $HC_DBPASS
+      EMAIL_HOST: healthchecks_postfix
+      DEFAULT_FROM_EMAIL: healthchecks@${DOMAIN}
+      DISCORD_CLIENT_ID: $HC_DISCORD_ID
+      DISCORD_CLIENT_SECRET: $HC_DISCORD_SECRET
+      SITE_ROOT: https://hc.${DOMAIN}
+    depends_on:
+      - healthchecks_db
+      - healthchecks_postfix
+    labels:
+      traefik.enable: true
+      traefik.http.services.healthchecks.loadbalancer.server.port: 8000
+      traefik.http.routers.healthchecks.rule: Host(`hc.${DOMAIN}`)
+      traefik.http.routers.healthchecks.tls: true
+    #command: bash -c 'while !</dev/tcp/healthchecks_db/5432; do sleep 1; done; uwsgi /opt/healthchecks/docker/uwsgi.ini'
+
 volumes:
   certs:
     driver: local
@@ -270,3 +317,9 @@ volumes:
       type: "none"
       o: "bind"
       device: "/mnt/auxiliary/netbird/management"
+  healthcheck_db:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "/mnt/auxiliary/healthcheck_db"
