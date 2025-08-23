@@ -12,3 +12,27 @@
     project_src: /home/ansible/sven
     remove_orphans: true
   when: copy.changed or force_all
+
+- name: "create directory for gitlab backups"
+  become: true
+  file:
+    path: /mnt/auxiliary/gitlab/backups
+    state: directory
+    owner: ansible
+    group: ansible
+    mode: '0777'
+
+- name: "copy ansible private key to access garry"
+  copy:
+    src: ../ansible_key
+    dest: /mnt/auxiliary/gitlab/ansible_key
+    owner: ansible
+    group: ansible
+    mode: '0700'
+
+- name: "backup cron"
+  cron:
+    name: "gitlab-backup"
+    minute: "0"
+    hour: "4"
+    job: "rsync -a --delete -e 'ssh -i /mnt/auxiliary/gitlab/ansible_key -p2244 -o StrictHostKeyChecking=no' --rsync-path='sudo rsync' ansible@garry.spatz.wtf:/mnt/gitlab-data/data/backups /mnt/auxiliary/gitlab/ && chmod -R 0777 /mnt/auxiliary/gitlab/backups"
