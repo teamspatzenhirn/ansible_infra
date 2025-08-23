@@ -12,3 +12,11 @@
     project_src: /home/ansible/garry
     remove_orphans: true
   when: copy.changed or force_all
+
+- name: "backup cron"
+  become: true
+  cron:
+    name: "gitlab-backup"
+    minute: "0"
+    hour: "1"
+    job: "docker exec gitlab /opt/gitlab/bin/gitlab-backup create CRON=1 SKIP=registry,artifacts"
