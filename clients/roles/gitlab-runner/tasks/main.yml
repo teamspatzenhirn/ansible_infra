@@ -26,5 +26,7 @@
         --url "https://git.spatz.wtf/" \
         --token "$RUNNER_TOKEN_{{ inventory_hostname }}" \
         --executor "docker" \
-        --docker-image "alpine:latest"
+        --docker-image "alpine:latest" \
+        --docker-privileged \
+        --docker-volumes "/certs/client"
   when: copy.changed or force_all
