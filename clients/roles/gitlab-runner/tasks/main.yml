@@ -6,6 +6,12 @@
     group: ansible
   register: copy
 
+- name: "remove runner config"
+  ansible.builtin.file:
+    path: /home/ansible/gitlab-runner/runner_data/config.toml
+    state: absent
+  when: copy.changed or force_all
+
 - name: "docker compose up"
   become: true
   community.docker.docker_compose_v2:
