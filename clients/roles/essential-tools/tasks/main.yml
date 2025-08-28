@@ -23,6 +23,7 @@
     state: present
     update_cache: true
     name:
+      - cmake
       - libuser
       - graphviz
       - tmux
