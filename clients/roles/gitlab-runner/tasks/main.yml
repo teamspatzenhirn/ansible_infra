@@ -6,6 +6,13 @@
     group: ansible
   register: copy
 
+- name: "template template.toml"
+  template:
+    src: "template.toml.j2"
+    dest: /home/ansible/template.toml
+    owner: ansible
+    group: ansible
+
 - name: "remove runner config"
   ansible.builtin.file:
     path: /home/ansible/gitlab-runner/runner_data/config.toml

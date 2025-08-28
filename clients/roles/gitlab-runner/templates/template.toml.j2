@@ -1,4 +1,6 @@
 [[runners]]
 [runners.docker]
+{% if inventory_hostname in groups['gpu'] %}
 gpus = "all"
 service_gpus = "all"
+{% endif %}

@@ -5,7 +5,7 @@ services:
     restart: always
     volumes:
       - runner_data:/etc/gitlab-runner
-      - ./template.toml:/template.toml:ro
+      - ../template.toml:/template.toml:ro
       - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
