@@ -1,0 +1,32 @@
+- name: "install gui preference settings for gnome-shell extensions"
+  become: true
+  apt:
+    name:
+      - gnome-shell-extension-prefs
+
+- name: "install gnome-shell extension fix-remote-window-icons globally"
+  become: true
+  git:
+    repo: https://github.com/teamspatzenhirn/fix-remote-window-icons.git
+    dest: /usr/share/gnome-shell/extensions/fix-remote-window-icons@com.github.phaengris
+
+- name: "copy icons"
+  become: true
+  copy:
+    src: icons/
+    dest: /usr/share/icons/hicolor/scalable/apps/
+  register: icons
+
+- name: "copy desktop files"
+  become: true
+  copy:
+    src: applications/
+    dest: /usr/share/applications/
+
+- name: "update icon cache"
+  become: true
+  shell:
+    cmd: |
+      update-icon-caches /usr/share/icons/*
+    executable: /bin/bash
+  when: icons.changed

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=realsense-viewer
+# Exec=TODO
+Icon=realsense
+Terminal=false
+Type=Application

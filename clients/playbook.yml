@@ -10,6 +10,7 @@
     - netbird
     - network
     - ufw
+    - gnome
 
 - name: PCs
   hosts:
