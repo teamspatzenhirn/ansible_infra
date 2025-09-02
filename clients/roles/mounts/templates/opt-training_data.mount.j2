@@ -1,0 +1,14 @@
+[Unit]
+Description=Training Data
+After=network.target
+Requires=wait-for-nfs@{{ mount_hostname }}.service
+After=wait-for-nfs@{{ mount_hostname }}.service
+
+[Mount]
+What={{ mount_hostname }}:/mnt/auxiliary/training_data
+Where=/opt/training_data
+Type=nfs
+Options=ro,hard,intr,auto,fsc,_netdev
+
+[Install]
+WantedBy=multi-user.target

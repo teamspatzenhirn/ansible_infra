@@ -22,6 +22,7 @@
       - /mnt/user-home
       - /mnt/auxiliary/skel
       - /mnt/auxiliary/sim_tracks
+      - /mnt/auxiliary/training_data
       - /mnt/aufnahmen
     common_hosts:
       - 134.60.25.0/24

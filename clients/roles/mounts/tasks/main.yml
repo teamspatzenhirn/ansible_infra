@@ -33,6 +33,7 @@
   with_items:
     - opt-aufnahmen.mount
     - opt-sim_tracks.mount
+    - opt-training_data.mount
     - opt-skel.mount
     - u.mount
     - wait-for-nfs@.service
