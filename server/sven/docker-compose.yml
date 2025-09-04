@@ -100,7 +100,7 @@ services:
       traefik.http.routers.httpd.tls: true
 
   kanidm:
-    image: kanidm/server:1.6.3
+    image: kanidm/server:1.7.3
     container_name: kanidm
     restart: always
     volumes:
@@ -121,7 +121,7 @@ services:
   ####################
 
   netbird-dashboard:
-    image: netbirdio/dashboard:v2.14.0
+    image: netbirdio/dashboard:v2.18.0
     container_name: netbird-dashboard
     restart: always
     environment:
@@ -148,7 +148,7 @@ services:
         max-file: "2"
 
   netbird-signal:
-    image: netbirdio/signal:0.48.0
+    image: netbirdio/signal:0.56.0
     container_name: netbird-signal
     restart: always
     volumes:
@@ -166,7 +166,7 @@ services:
         max-file: "2"
 
   netbird-relay:
-    image: netbirdio/relay:0.48.0
+    image: netbirdio/relay:0.56.0
     container_name: netbird-relay
     restart: always
     environment:
@@ -186,7 +186,7 @@ services:
         max-file: "2"
 
   netbird-management:
-    image: netbirdio/management:0.48.0
+    image: netbirdio/management:0.56.0
     container_name: netbird-management
     restart: always
     depends_on:
