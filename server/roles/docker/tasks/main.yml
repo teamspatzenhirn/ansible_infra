@@ -49,3 +49,25 @@
     name: ansible
     append: true
     groups: docker
+
+- name: "add docker group to djtrumpadmin user"
+  become: true
+  user:
+    name: djtrumpadmin
+    append: true
+    groups: docker
+
+- name: "copy daemon config with log-rotation"
+  become: true
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  register: config
+
+- name: "restart docker daemon"
+  become: true
+  shell: systemctl restart docker
+  when: config.changed or force_all
