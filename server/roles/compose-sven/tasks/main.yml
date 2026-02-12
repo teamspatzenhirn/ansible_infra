@@ -1,4 +1,5 @@
 - name: "copy to ansible user home"
+  become: true
   copy:
     src: sven
     dest: /home/ansible

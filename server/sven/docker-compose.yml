@@ -286,6 +286,32 @@ services:
       traefik.http.routers.healthchecks.tls: true
     #command: bash -c 'while !</dev/tcp/healthchecks_db/5432; do sleep 1; done; uwsgi /opt/healthchecks/docker/uwsgi.ini'
 
+  ###################
+  #    WireGuard    #
+  ###################
+
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/DE
+      - SERVERURL=sven.spatz.wtf
+      - SERVERPORT=4444
+      - PEERS=1
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.13.13.0
+      - ALLOWEDIPS=0.0.0.0/0
+      - PERSISTENTKEEPALIVE_PEERS=all
+      - LOG_CONFS=true
+    volumes:
+      - ./wireguard:/config
+    network_mode: host
+    restart: always
+
 volumes:
   certs:
     driver: local

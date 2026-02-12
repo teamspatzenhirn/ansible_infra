@@ -1,0 +1,3 @@
+peer1/*  filter=crypt diff=crypt merge=crypt
+server/*  filter=crypt diff=crypt merge=crypt
+wg_confs/*  filter=crypt diff=crypt merge=crypt

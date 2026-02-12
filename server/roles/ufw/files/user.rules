@@ -51,4 +51,7 @@
 -A ufw-user-input -p tcp --dport 9102 -s 134.60.112.128/27 -j ACCEPT
 -A ufw-user-input -p udp --dport 9102 -s 134.60.112.128/27 -j ACCEPT
 
+### tuple ### allow udp 4444 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 4444 -j ACCEPT
+
 ### END RULES ###
