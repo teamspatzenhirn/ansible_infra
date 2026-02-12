@@ -312,6 +312,15 @@ services:
     network_mode: host
     restart: always
 
+  discord_esp:
+    build: 
+      context: discord-esp
+      dockerfile: Dockerfile
+    environment:
+      ESP_URL: $ESP_URL
+      DISCORD_KEY: $DISCORD_KEY
+    restart: always
+
 volumes:
   certs:
     driver: local

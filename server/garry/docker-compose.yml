@@ -1,6 +1,7 @@
 services:
   gitlab:
-    image: gitlab/gitlab-ce:18.3.1-ce.0
+    # https://gitlab-com.gitlab.io/support/toolbox/upgrade-path/
+    image: gitlab/gitlab-ce:18.8.4-ce.0
     container_name: gitlab
     restart: always
     hostname: git.spatz.wtf

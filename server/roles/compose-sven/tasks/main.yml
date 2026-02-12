@@ -12,6 +12,7 @@
   community.docker.docker_compose_v2:
     project_src: /home/ansible/sven
     remove_orphans: true
+    build: "always"
   when: copy.changed or force_all
 
 - name: "create directory for gitlab backups"
