@@ -100,7 +100,7 @@ services:
       traefik.http.routers.httpd.tls: true
 
   kanidm:
-    image: kanidm/server:1.7.3
+    image: kanidm/server:1.8.6
     container_name: kanidm
     restart: always
     volumes:
