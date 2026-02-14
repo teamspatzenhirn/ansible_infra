@@ -1,4 +1,4 @@
-FROM python:3.12.12-trixie
+FROM python:3.14.3-slim-trixie
 
 WORKDIR /app
 
@@ -6,4 +6,5 @@ COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "bot.py"]
+# https://stackoverflow.com/questions/29663459/why-doesnt-python-app-print-anything-when-run-in-a-detached-docker-container
+CMD ["python", "-u", "bot.py"]

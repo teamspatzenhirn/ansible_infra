@@ -89,6 +89,7 @@ services:
       traefik.http.routers.redirect-uni.middlewares: redirect-uni
 
   oauth-backend:
+    container_name: oauth-backend
     # internal: oauth2proxy on port 4180
     image: quay.io/oauth2-proxy/oauth2-proxy:latest
     environment:
@@ -308,6 +309,7 @@ services:
         max-file: "2"
 
   netbird-coturn:
+    container_name: netbird-coturn
     image: coturn/coturn:4-alpine
     restart: always
     domainname: vpn.$DOMAIN
@@ -396,6 +398,7 @@ services:
     restart: always
 
   discord_esp:
+    container_name: discord_esp
     build: 
       context: discord-esp
       dockerfile: Dockerfile

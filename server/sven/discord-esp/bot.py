@@ -4,6 +4,7 @@ import os
 
 url = os.environ.get('ESP_URL')
 discord_key = os.environ.get('DISCORD_KEY')
+request_timeout=2#[s]
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -13,17 +14,18 @@ class MyClient(discord.Client):
         print(f'Message from {message.author}: {message.content}')
         print(f'Channel: {message.channel}')
 
-        if ("auf" in message.content) and (str(message.channel) == "tür"):
-            x = requests.post(url)
-            time = x.elapsed.total_seconds()
-            if x.status_code == 200:
-                pass
-            else:
-                await message.reply('Ich konnte den ESP nach {} Sekunden nicht erreichen :('.format(time), mention_author=True)
+        if ("auf" in message.content.lower()) and (str(message.channel) == "tür"):
+            try:
+                x = requests.post(url, timeout=request_timeout)
+                if x.status_code == 200:
+                    pass
+                else:
+                    print(f'ERROR: status_code={x.status_code}')
+            except requests.exceptions.Timeout:
+                await message.reply('Ich konnte den ESP nach {} Sekunden nicht erreichen :('.format(request_timeout), mention_author=True)
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
 client.run(discord_key)
-
