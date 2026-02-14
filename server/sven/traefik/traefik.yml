@@ -13,9 +13,6 @@ entryPoints:
 
   websecure:
     address: ":443/tcp"
-    http:
-      tls:
-        options: "tls-options@file"
 
 serversTransport:
   insecureSkipVerify: true
