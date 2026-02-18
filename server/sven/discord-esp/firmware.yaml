@@ -35,6 +35,11 @@ ota:
   - platform: esphome
     password: !secret ota_password
 
+api:
+  encryption:
+    key: !secret api_key
+  reboot_timeout: 0s # never reboot
+
 
 switch:
   - platform: gpio
