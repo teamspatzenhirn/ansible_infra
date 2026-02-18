@@ -1,0 +1,96 @@
+substitutions:
+  friendly_name: "esp"
+  device_name: "esp8266"
+
+esphome:
+  name: $device_name
+
+esp8266:
+  board: d1
+
+logger:
+  level: DEBUG
+
+wifi:
+  networks:
+    - ssid: welcome
+  use_address: 10.13.13.2
+  post_connect_roaming: true
+
+time:
+  - platform: sntp
+    id: sntp_time
+    # timezone: Europe/Berlin
+    timezone: "CET-1CEST,M3.5.0/02,M10.5.0/03"
+    servers:
+      - rustime01.rus.uni-stuttgart.de
+      - 1.pool.ntp.org
+      - 2.pool.ntp.org
+
+web_server:
+  port: 80
+  enable_private_network_access: true
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+
+switch:
+  - platform: gpio
+    name: "Relay"
+    pin:
+      number: 5
+      mode: OUTPUT
+    restore_mode: ALWAYS_OFF
+    id: relay
+    on_turn_on:
+    - delay: 1500ms
+    - switch.turn_off: relay
+
+
+binary_sensor:
+  - platform: wireguard
+    enabled:
+      name: 'WireGuard Enabled'
+
+sensor:
+  - platform: wireguard
+    latest_handshake:
+      name: 'WireGuard Latest Handshake'
+
+text_sensor:
+  - platform: wireguard
+    address:
+      name: 'WireGuard IPv4'
+
+  - platform: wifi_info
+    ip_address:
+      name: "WiFi IPv4"
+      id: ip_address
+
+
+wireguard:
+  address: 10.13.13.2
+  private_key: !secret private_key
+  peer_endpoint: sven.spatz.wtf
+  peer_public_key: !secret peer_public_key
+
+  # Optional netmask (this is the default, no outgoing traffic
+  # will pass through the tunnel if omitted)
+  netmask: 0.0.0.0
+
+  # Optional endpoint port (WireGuard default if omitted)
+  peer_port: 4444
+
+  # Optional pre-shared key (omit if not in use)
+  peer_preshared_key: !secret peer_preshared_key
+
+  # Optional list of ip/mask (any host is allowed if omitted)
+  peer_allowed_ips:
+   - 0.0.0.0/0
+  #  - l.m.n.o/32  # the /32 can be omitted for single host
+  #  - [...]
+
+  # Optional keepalive (disabled by default)
+  peer_persistent_keepalive: 25s
