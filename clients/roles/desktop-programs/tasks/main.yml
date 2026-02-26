@@ -6,6 +6,7 @@
       - com.jetbrains.CLion
       - com.discordapp.Discord
       - com.spotify.Client
+      - org.mozilla.Thunderbird
     state: latest
 
 - name: install apt packages
