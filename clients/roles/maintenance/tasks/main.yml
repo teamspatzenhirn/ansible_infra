@@ -1,0 +1,70 @@
+- name: "install and update unattended-upgrades"
+  become: true
+  apt:
+    name:
+      - unattended-upgrades
+      - distro-info-data
+    state: latest
+    update_cache: yes
+
+- name: "copy apt config"
+  become: true
+  copy:
+    src: "99spatzenhirn"
+    dest: /etc/apt/apt.conf.d/99spatzenhirn
+    owner: root
+    group: root
+    mode: 0644
+  register: config
+
+- name: "create systemd directories"
+  become: true
+  file: path=/etc/systemd/system/{{ item }} state=directory
+  with_items:
+    - apt-daily.timer.d
+    - apt-daily-upgrade.timer.d
+    - apt-daily.service.d
+    - apt-daily-upgrade.service.d
+
+- name: "copy apt-daily systemd config"
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ item }}/override.conf
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - apt-daily.timer.d
+    - apt-daily-upgrade.timer.d
+    - apt-daily.service.d
+    - apt-daily-upgrade.service.d
+  register: systemd
+
+- name: "daemon reload"
+  become: true
+  shell: systemctl daemon-reload
+  when: config.changed or systemd.changed or force_all
+
+# https://www.reddit.com/r/flatpak/comments/12vaves/is_there_an_auto_update_mechansim_built_into/?tl=de
+- name: "flatpak update cron"
+  cron:
+    name: "flatpak-update"
+    minute: "0"
+    hour: "3"
+    job: "flatpak update -y"
+
+# https://blog.gruniversal.de/2020/07/11/flatpak-cache-und-unbenutzte-runtimes-loeschen/
+- name: "flatpak cleanup"
+  cron:
+    name: "flatpak-cleanup"
+    minute: "0"
+    hour: "4"
+    job: "flatpak uninstall --unused -y ; bash -c '! pgrep -x flatpak && rm -r /var/tmp/flatpak-cache-*'"
+
+- name: "docker cleanup"
+  cron:
+    name: "docker-cleanup"
+    minute: "0"
+    hour: "5"
+    job: "docker system prune -f"

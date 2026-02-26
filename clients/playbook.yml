@@ -11,6 +11,7 @@
     - network
     - ufw
     - gnome
+    - maintenance
 
 - name: PCs
   hosts:
