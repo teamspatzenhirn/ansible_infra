@@ -49,3 +49,12 @@
     name: spatz-vnc
     daemon_reload: true
     enabled: "{{ 'true' if vnc_autostart else 'false' }}"
+
+- name: "copy polkit rules"
+  become: true
+  copy:
+    src: 99-polkit-spatzenhirn.rules
+    dest: /etc/polkit-1/rules.d/99-polkit-spatzenhirn.rules
+    mode: 0644
+    owner: root
+    group: root

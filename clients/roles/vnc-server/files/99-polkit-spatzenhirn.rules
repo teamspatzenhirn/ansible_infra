@@ -1,0 +1,16 @@
+// https://askubuntu.com/questions/1535220/ubuntu-24-04-tigervnc-authentication-is-required-to-create-a-color-profile
+polkit.addRule(function(action, subject){
+    if(action.id.match(/^org\.freedesktop\.color\-manager\.create\-*/))
+        return polkit.Result.YES;
+    if(action.id.match(/^org\.freedesktop\.color\-manager\.delete\-*/))
+        return polkit.Result.YES;
+    if(action.id.match(/^org\.freedesktop\.color\-manager\.modify\-*/))
+        return polkit.Result.YES;
+});
+
+// https://askubuntu.com/questions/1291512/authentication-required-system-policy-prevents-wifi-scans-in-focalfossa
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.NetworkManager.wifi.scan") {
+        return polkit.Result.YES;
+    }
+});
