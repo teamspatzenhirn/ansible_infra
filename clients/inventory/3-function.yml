@@ -6,7 +6,7 @@ pc:
 ci:
   hosts:
     pc[10:11]:
-    pc[15:16]:
+    pc15:
 
 nuc:
   hosts:

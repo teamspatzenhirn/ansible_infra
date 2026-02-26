@@ -5,6 +5,6 @@ global_ip:
 netbird:
   hosts:
     pc[10:11]:
-    pc[15:16]:
+    pc15:
     pc[01:02]:
     pc[20:21]:

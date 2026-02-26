@@ -5,7 +5,7 @@ teamraum:
 werkstatt:
   hosts:
     pc[10:11]:
-    pc[15:16]:
+    pc15:
 
 spatz:
   hosts:
