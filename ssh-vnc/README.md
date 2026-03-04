@@ -32,6 +32,9 @@ Invoke-Command -ScriptBlock $ScriptBlock
 curl -Ls https://raw.githubusercontent.com/teamspatzenhirn/ansible_infra/refs/heads/main/ssh-vnc/install-ssh-vnc.sh | bash -s --
 ```
 
+> [!NOTE]
+> If you dont have root privileges on your machine or if you want to install ssh-vnc to another location than `/usr/local/bin`, you can alternatively download [this file](/clients/roles/vnc-client/files/ssh-vnc) and make it executable (`chmod +x <path>/ssh-vnc`). Don't forget to add that location to your `$PATH`, if it isn't already.
+
 ## Aliases
 > [!TIP]
 > Setup an alias to specify parameters you use on a regular basis (e.g. your username)

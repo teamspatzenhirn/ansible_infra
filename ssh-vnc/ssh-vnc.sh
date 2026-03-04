@@ -79,14 +79,14 @@ fi
 
 # --------------------------------------
 # 7. Start VNCserver via SSH in separate process / window
-sshcommand="ssh -t -t -L ${port}:localhost:${port} -p2244 ${ruser}@${fqdn} \"/bin/bash -O huponexit -c 'vncserver -fg -nolock -rfbport ${port}'\""
+sshcommand="ssh -t -t -L ${port}:localhost:${port} -p2244 ${ruser}@${fqdn} 'vncserver -fg -nolock -rfbport ${port}' || sleep 10"
 x-terminal-emulator -e "$sshcommand" &
 sleep 1
 
 # --------------------------------------
 # 8. Setup Handling for Closing / Termination
 kill_ssh () {
-    kill $(pgrep -fx "${sshcommand//\"}") 2>/dev/null
+    kill $(pgrep -f "${sshcommand}") 2>/dev/null
     exit
 }
 trap kill_ssh INT
