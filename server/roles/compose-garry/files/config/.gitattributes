@@ -1,0 +1,4 @@
+* filter=crypt diff=crypt merge=crypt
+.gitattributes !filter !diff !merge
+*.pub !filter !diff !merge
+gitlab.rb !filter !diff !merge

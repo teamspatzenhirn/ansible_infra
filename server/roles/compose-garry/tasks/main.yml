@@ -6,12 +6,47 @@
     group: ansible
   register: copy
 
+- name: gitlab-data directories
+  become: true
+  file:
+    path: /mnt/gitlab-data/{{ item }}
+    state: directory
+  with_items:
+    - config
+    - logs
+    - data
+
+- name: "copy gitlab config"
+  become: true
+  copy:
+    src: config
+    dest: /mnt/gitlab-data/
+    owner: root
+    group: root
+  register: copy
+
+- name: gitlab keys permissions
+  become: true
+  file:
+    path: /mnt/gitlab-data/config/{{ item }}
+    mode: 0600
+  with_items:
+    - ssh_host_ecdsa_key
+    - ssh_host_ed25519_key
+    - ssh_host_rsa_key
+
 - name: "docker compose up"
   become: true
   community.docker.docker_compose_v2:
     project_src: /home/ansible/garry
     remove_orphans: true
   when: copy.changed or force_all
+
+- name: crontab timezone UTC
+  ansible.builtin.cron:
+    name: CRON_TZ
+    env: yes
+    value: UTC
 
 - name: "backup cron"
   become: true

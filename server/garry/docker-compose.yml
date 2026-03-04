@@ -15,6 +15,8 @@ services:
       - config:/etc/gitlab
       - logs:/var/log/gitlab
       - data:/var/opt/gitlab
+    environment:
+      KANIDM_GITLAB_OAUTH_SECRET: $KANIDM_GITLAB_OAUTH_SECRET
   postfix:
     image: tozd/postfix:ubuntu-noble
     container_name: postfix
