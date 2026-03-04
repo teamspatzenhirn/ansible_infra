@@ -1,0 +1,24 @@
+- name: "install fail2ban"
+  become: true
+  apt:
+    name:
+      - fail2ban
+    state: latest
+    update_cache: yes
+
+- name: "copy fail2ban config"
+  become: true
+  copy:
+    src: jail.local
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: 0644
+  register: config
+
+- name: "restart fail2ban service"
+  become: true
+  systemd_service:
+    name: fail2ban
+    state: restarted
+  when: config.changed or force_all

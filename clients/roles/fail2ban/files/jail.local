@@ -1,0 +1,7 @@
+[DEFAULT]
+bantime = 1h
+ignoreip = 134.60.25.0/24 100.64.0.0/10
+
+[sshd]
+enabled = true
+port = 2244

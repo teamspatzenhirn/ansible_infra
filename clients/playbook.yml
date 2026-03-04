@@ -10,6 +10,7 @@
     - netbird
     - network
     - ufw
+    - fail2ban
     - gnome
     - maintenance
 
