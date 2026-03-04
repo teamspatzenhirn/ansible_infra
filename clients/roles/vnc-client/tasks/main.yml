@@ -2,3 +2,10 @@
   become: true
   apt:
     name: tigervnc-viewer
+
+- name: "install ssh-vnc"
+  become: true
+  copy:
+    src: ssh-vnc
+    dest: /usr/local/bin/ssh-vnc
+    mode: a+x

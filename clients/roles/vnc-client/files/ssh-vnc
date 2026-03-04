@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -Ls https://raw.githubusercontent.com/teamspatzenhirn/ansible_infra/refs/heads/main/ssh-vnc/ssh-vnc.sh | bash -s -- "$@"
