@@ -338,12 +338,17 @@ services:
       POSTGRES_DB: hc
       POSTGRES_PASSWORD: $HC_DBPASS
 
-  healthchecks_postfix:
-    image: tozd/postfix:ubuntu-noble
-    container_name: healthchecks_postfix
+  postfix:
+    image: postfix
+    build:
+      context: ../postfix
+      dockerfile: Dockerfile
+    container_name: postfix
     restart: always
     environment:
-      - MY_NETWORKS=0.0.0.0/0
+      - RELAYHOST=smtp.uni-ulm.de
+      - RELAYPORT=25
+      - MYNETWORKS=0.0.0.0/0
 
   healthchecks:
     image: healthchecks/healthchecks:v3.10
@@ -356,14 +361,14 @@ services:
       DB_HOST: healthchecks_db
       DB_NAME: hc
       DB_PASSWORD: $HC_DBPASS
-      EMAIL_HOST: healthchecks_postfix
+      EMAIL_HOST: postfix
       DEFAULT_FROM_EMAIL: healthchecks@${DOMAIN}
       DISCORD_CLIENT_ID: $HC_DISCORD_ID
       DISCORD_CLIENT_SECRET: $HC_DISCORD_SECRET
       SITE_ROOT: https://hc.${DOMAIN}
     depends_on:
       - healthchecks_db
-      - healthchecks_postfix
+      - postfix
     labels:
       traefik.enable: true
       traefik.http.services.healthchecks.loadbalancer.server.port: 8000

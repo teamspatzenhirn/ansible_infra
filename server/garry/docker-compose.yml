@@ -17,12 +17,18 @@ services:
       - data:/var/opt/gitlab
     environment:
       KANIDM_GITLAB_OAUTH_SECRET: $KANIDM_GITLAB_OAUTH_SECRET
+      
   postfix:
-    image: tozd/postfix:ubuntu-noble
+    image: postfix
+    build:
+      context: ../postfix
+      dockerfile: Dockerfile
     container_name: postfix
     restart: always
     environment:
-      - MY_NETWORKS=0.0.0.0/0
+      - RELAYHOST=smtp.uni-ulm.de
+      - RELAYPORT=25
+      - MYNETWORKS=0.0.0.0/0
 
 volumes:
   config:

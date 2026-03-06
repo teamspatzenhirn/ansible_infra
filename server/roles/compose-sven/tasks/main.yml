@@ -7,6 +7,14 @@
     group: ansible
   register: copy
 
+- name: "copy postfix to ansible user home"
+  copy:
+    src: postfix
+    dest: /home/ansible
+    owner: ansible
+    group: ansible
+  register: copy
+
 - name: "docker compose up"
   become: true
   community.docker.docker_compose_v2:
