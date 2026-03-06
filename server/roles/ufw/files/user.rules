@@ -16,13 +16,11 @@
 -A ufw-user-input -p tcp --dport 2022 -j ACCEPT
 -A ufw-user-input -p udp --dport 2022 -j ACCEPT
 
-### tuple ### limit any 2244 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 2244 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p tcp --dport 2244 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p tcp --dport 2244 -j ufw-user-limit-accept
--A ufw-user-input -p udp --dport 2244 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p udp --dport 2244 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p udp --dport 2244 -j ufw-user-limit-accept
+### tuple ### allow tcp 2244 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2244 -j ACCEPT
+
+### tuple ### allow tcp 5050 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 5050 -j ACCEPT
 
 ### tuple ### allow any 4713 0.0.0.0/0 any 134.60.25.192/26 in
 -A ufw-user-input -p tcp --dport 4713 -s 134.60.25.192/26 -j ACCEPT

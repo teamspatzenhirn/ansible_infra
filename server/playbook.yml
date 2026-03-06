@@ -8,6 +8,8 @@
     - authorized-keys
     - docker
     - netbird
+    - fail2ban
+    - ufw
 
 - name: Infra
   hosts: sven
@@ -16,7 +18,6 @@
     - compose-sven
     - pulseaudio
     - kanidm-client
-    - ufw
     - bacula
     - gasket-build
 
