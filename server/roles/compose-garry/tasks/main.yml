@@ -42,12 +42,6 @@
     remove_orphans: true
   when: copy.changed or force_all
 
-- name: crontab timezone UTC
-  ansible.builtin.cron:
-    name: CRON_TZ
-    env: yes
-    value: UTC
-
 - name: "backup cron"
   become: true
   cron:
