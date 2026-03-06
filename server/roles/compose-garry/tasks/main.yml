@@ -23,7 +23,6 @@
     dest: /mnt/gitlab-data/
     owner: root
     group: root
-  register: copy
 
 - name: gitlab keys permissions
   become: true
