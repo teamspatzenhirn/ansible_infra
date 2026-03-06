@@ -21,6 +21,6 @@
     - gasket-build
 
 - name: GitLab
-  hosts: garry
+  hosts: garry, maigit
   roles:
     - compose-garry

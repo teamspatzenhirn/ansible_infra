@@ -12,3 +12,5 @@ server:
       ansible_host: sven.spatz.wtf
     garry:
       ansible_host: garry.spatz.wtf
+    maigit:
+      ansible_host: maigit.spatz.wtf
