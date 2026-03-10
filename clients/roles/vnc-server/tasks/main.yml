@@ -6,6 +6,7 @@
       - tigervnc-standalone-server
       - xfce4
       - xfce4-goodies
+      - xfce4-screensaver
       - xfce4-whiskermenu-plugin
       - dbus-x11
 
