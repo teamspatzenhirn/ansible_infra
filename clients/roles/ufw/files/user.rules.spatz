@@ -1,0 +1,12 @@
+### RULES ###
+
+### tuple ### allow tcp 2244 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2244 -j ACCEPT
+
+### tuple ### allow tcp 5901 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 5901 -j ACCEPT
+
+### tuple ### allow udp 1337 0.0.0.0/0 any 10.0.0.2 in
+-A ufw-user-input -p udp --dport 1337 -s 10.0.0.2 -j ACCEPT
+
+### END RULES ###

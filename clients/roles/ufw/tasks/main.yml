@@ -15,7 +15,7 @@
   replace:
     path: /etc/ufw/user.rules
     regexp: '### RULES ###[\s\S]*### END RULES ###'
-    replace: "{{ lookup('file', 'user.rules') }}"
+    replace: "{{ lookup('file', 'user.rules.spatz') if ufw_spatz else lookup('file', 'user.rules') }}"
   register: user_rules
 
 - name: "install user6.rules"
@@ -23,7 +23,7 @@
   replace:
     path: /etc/ufw/user6.rules
     regexp: '### RULES ###[\s\S]*### END RULES ###'
-    replace: "{{ lookup('file', 'user6.rules') }}"
+    replace: "{{ lookup('file', 'user6.rules.spatz') if ufw_spatz else lookup('file', 'user6.rules') }}"
   register: user6_rules
 
 - name: "reload if changed"

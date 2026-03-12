@@ -1,0 +1,9 @@
+### RULES ###
+
+### tuple ### allow tcp 2244 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 2244 -j ACCEPT
+
+### tuple ### allow tcp 5901 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 5901 -j ACCEPT
+
+### END RULES ###

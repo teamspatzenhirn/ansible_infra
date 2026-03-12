@@ -46,3 +46,4 @@ netbird:
 spatz:
   vars:
     vnc_autostart: true
+    ufw_spatz: true
