@@ -10,6 +10,15 @@
       - xfce4-whiskermenu-plugin
       - dbus-x11
 
+- name: "remove light-locker"
+  become: true
+  apt:
+    state: absent
+    purge: true
+    autoremove: yes
+    name:
+      - light-locker
+
 - name: "check if vnc passwd exists"
   become: true
   stat:
