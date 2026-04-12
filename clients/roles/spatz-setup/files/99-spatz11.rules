@@ -1,0 +1,2 @@
+SUBSYSTEM=="tty", ENV{ID_VENDOR_ID}=="2fe3", ENV{ID_MODEL_ID}=="0042", ENV{ID_USB_INTERFACE_NUM}=="00", GROUP="plugdev", SYMLINK+="ttySpatzConsole", RUN+="/bin/stty -F /dev/%k raw -echo"
+SUBSYSTEM=="tty", ENV{ID_VENDOR_ID}=="2fe3", ENV{ID_MODEL_ID}=="0042", ENV{ID_USB_INTERFACE_NUM}=="02", GROUP="plugdev", SYMLINK+="ttySpatzShell", RUN+="/bin/stty -F /dev/%k raw -echo" 

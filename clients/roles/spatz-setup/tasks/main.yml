@@ -1,8 +1,11 @@
 - name: "copy tty udev rules for spatzX IO-Board"
   become: true
   copy:
-    src: 99-spatzX.rules
-    dest: /etc/udev/rules.d/99-spatzX.rules
+    src: "{{ item }}"
+    dest: /etc/udev/rules.d/{{ item }}
+  with_items:
+    - 99-spatzX.rules
+    - 99-spatz11.rules
 
 - name: "copy monitors.xml for rotated hdmi monitor on spatz"
   become: true
