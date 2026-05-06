@@ -130,6 +130,52 @@
     version: develop
     update: no
 
+- name: "clone spatz_display repo"
+  become: true
+  become_user: spatz
+  git:
+    repo: https://github.com/teamspatzenhirn/spatz_display.git
+    dest: /spatz/spatz_display
+    recursive: yes
+    version: main
+    update: yes
+  register: spatz_display
+
+- name: "build spatz_display docker image"
+  become: true
+  become_user: spatz
+  community.docker.docker_image_build:
+    name: spatz_display:latest
+    path: /spatz/spatz_display
+    dockerfile: Dockerfile
+    pull: true
+    rebuild: always
+    nocache: true
+  when: spatz_display.changed
+
+- name: "Create bin directory"
+  become: true
+  become_user: spatz
+  file:
+    path: /spatz/bin
+    state: directory
+
+- name: "Copy startgui.sh for spatz_display"
+  become: true
+  become_user: spatz
+  copy:
+    src: startgui.sh
+    dest: /spatz/bin/startgui.sh
+    mode: u+x
+
+- name: "Copy gui.desktop for spatz_display"
+  become: true
+  become_user: spatz
+  copy:
+    src: gui.desktop
+    dest: /spatz/.local/share/applications/gui.desktop
+    mode: u+x
+
 - name: "copy tmux config file"
   become: true
   copy:

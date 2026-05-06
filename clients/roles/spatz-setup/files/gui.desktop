@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Spatz GUI
+Comment=
+Exec=/spatz/bin/startgui.sh
+Icon=
+Terminal=true
+Path=
+StartupNotify=false
