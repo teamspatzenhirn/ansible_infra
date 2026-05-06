@@ -1,0 +1,12 @@
+[Unit]
+Description=spatz tmux
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/tmux -S /tmp/tmux-spatz start-server
+User=spatz
+
+[Install]
+WantedBy=default.target

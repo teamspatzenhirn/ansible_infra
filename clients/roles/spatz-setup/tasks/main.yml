@@ -129,3 +129,24 @@
     accept_newhostkey: true
     version: develop
     update: no
+
+- name: "copy tmux config file"
+  become: true
+  copy:
+    src: tmux.conf
+    dest: /spatz/.tmux.conf
+
+- name: "copy tmux systemd service"
+  become: true
+  copy:
+    src: spatz-tmux.service
+    dest: /etc/systemd/system/spatz-tmux.service
+  register: service
+
+- name: "enable/disable tmux systemd autostart"
+  become: true
+  systemd_service:
+    state: "{{ 'restarted' if service.changed else 'started' }}"
+    name: spatz-tmux
+    daemon_reload: true
+    enabled: true
