@@ -31,7 +31,7 @@ kanidm person posix set -D $kanidm_user $username > /dev/null
 read -p "Generate reset token? [y/N] " yesno
 case $yesno in
   [Yy]* )
-    kanidm person credential create-reset-token -D $kanidm_user $username 43200
+    kanidm person credential create-reset-token -D $kanidm_user --ttl 43200 $username
   ;;
 esac
 
@@ -44,11 +44,11 @@ else
 
   ssh_dir="${user_dir}/.ssh"
   echo "Generating spatz pc ssh key and adding it to the user"
-  sudo mkdir "$ssh_dir"
+  sudo mkdir -p "$ssh_dir"
   sudo chmod 700 "$ssh_dir"
   sudo ssh-keygen -t ed25519 -f "${ssh_dir}/id_spatz" -N "" -C "${username}@SpatzPCs" > /dev/null
 
-  pubkey=$(cat "${ssh_dir}/id_spatz.pub" | cut -d ' ' -f 1,2)
+  pubkey=$(sudo cat "${ssh_dir}/id_spatz.pub" | cut -d ' ' -f 1,2)
   kanidm person ssh add-publickey -D $kanidm_user $username "Spatz PCs" "$pubkey" > /dev/null
 fi
 
